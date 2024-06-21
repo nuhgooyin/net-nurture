@@ -27,7 +27,7 @@
   - Users are able to search for specific contacts by name.
   - Users are able to filter contacts by tags.
   - Using open-source LLM APIs, summarize the user’s conversations with each of their contacts, with new messages from contacts afterwards being received through webhook and input with the previously summarized conversations to create an updated summary.
-  - Email sequencing: Allow users to set automated emails (i.e., user-pre-written emails sent to a specific contact after x number of days).
+  - Users are able to set automated emails (i.e., user-pre-written emails sent to a specific contact after x number of days).
 
 
 - **Target Audience**:
@@ -57,10 +57,9 @@ To meet the additional requirements for our web application, we will implement f
 
 - **Webhook Interaction**: We will implement a feature that interacts with a webhook to pull updates from an external service. Specifically, we will use the Gmail API’s server push notifications to watch for changes in Gmail mailboxes. This interaction via webhooks allows us to pull new emails from contacts and update the conversation summaries for those contacts automatically. [Learn more about Gmail API push notifications](https://developers.google.com/gmail/api/guides/push)
 - **Long-Running Task**: We will implement functionality to handle long-running tasks efficiently. This will include:
-  - Fetching Profile and Conversation Data: Initially, we will fetch profile and conversation data from linked applications, which can take more than 10 seconds.
-  - Summarizing User Conversations: We will use a language model to generate summaries of user conversations. Utilizing the OpenAI Chat API, we can feed the conversation data and request summaries. Also, models from a hugging face like “DistilBERT” or similar can be employed for this task to provide concise conversation summaries.[Learn more about OpenAI Chat API](https://platform.openai.com/docs/api-reference/chat) [Learn more about hugging face DistilBERT](https://huggingface.co/docs/transformers/v4.41.3/en/model_doc/distilbert#overview)
-  - Email Sequence: Allow users to set automated emails (i.e. user-pre-written emails that are sent to a specific contact after x number of days). We will utilize setTimeout() to send the emails at the specified time. The sending of the emails will be done through the Gmail API. Users could either use pre-written email from Net Nurture or write themself.
-
+  - *Fetching Profile and Conversation Data*: Initially, we will fetch profile and conversation data from linked applications, which can take more than 10 seconds.
+  - *Summarizing User Conversations*: We will use a language model to generate summaries of user conversations. Utilizing the OpenAI Chat API, we can feed the conversation data and request summaries. Also, models from a hugging face like “DistilBERT” or similar can be employed for this task to provide concise conversation summaries.[Learn more about OpenAI Chat API](https://platform.openai.com/docs/api-reference/chat) [Learn more about hugging face DistilBERT](https://huggingface.co/docs/transformers/v4.41.3/en/model_doc/distilbert#overview)
+  - *Email Sequence*: Allow users to set automated emails (i.e. user-pre-written emails that are sent to a specific contact after x number of days). We will utilize setTimeout() to send the emails at the specified time. The sending of the emails will be done through the Gmail API. Users could either use pre-written email from Net Nurture or write themself.
 
 ## Milestones
 ### Alpha Version
