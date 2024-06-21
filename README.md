@@ -13,17 +13,22 @@
   - Contact name
   - Method of communication
   - Summary of the conversations with this contact
+  - Tags
   - The date of the last conversation
   - This information is stored on the user’s dashboard, and reminders for when to check up on contacts are given through dashboard notifications.
 
-For a general overview of how this will look, see our [UI mockup here](https://www.canva.com/design/DAGIalyau_o/krGdKIZq7czRcHZCDXJU_w/edit).
+- For a general overview of how this will look, see our UI mockup here: [Net Nurture UI Mockup](https://www.canva.com/design/DAGIalyau_o/krGdKIZq7czRcHZCDXJU_w/edit)
 
 - **Key Features**:
   - The initial page is a user signup/sign-in page. At the end of the sign-up, we will also ask the user the preferred timeline of how recent the data they want to include in the summarized information for contacts are, along the lines of ‘All time’, ‘1 year’, and ‘3 months’.
   - After signing in or signing up, it will display the user dashboard that shows the information mentioned in the overview and allows access to “show notifications”.
   - Users can link their Gmail (if we have time, we may add the ability to link other social media), and the application will automatically fill out and maintain the user’s dashboard in real-time.
-  - Users have the option to manually add contacts and can override contact information, method of communication, date of last contact, conversation summary, etc.
+  - Users have the option to manually add contacts and can override contact information, method of communication, date of last contact, conversation summary, tags, etc.
+  - Users are able to search for specific contacts by name.
+  - Users are able to filter contacts by tags.
   - Using open-source LLM APIs, summarize the user’s conversations with each of their contacts, with new messages from contacts afterwards being received through webhook and input with the previously summarized conversations to create an updated summary.
+  - Email sequencing: Allow users to set automated emails (i.e., user-pre-written emails sent to a specific contact after x number of days).
+
 
 - **Target Audience**:
   - Job hunters
@@ -54,6 +59,8 @@ To meet the additional requirements for our web application, we will implement f
 - **Long-Running Task**: We will implement functionality to handle long-running tasks efficiently. This will include:
   - Fetching Profile and Conversation Data: Initially, we will fetch profile and conversation data from linked applications, which can take more than 10 seconds.
   - Summarizing User Conversations: We will use a language model to generate summaries of user conversations. Utilizing the OpenAI Chat API, we can feed the conversation data and request summaries. Also, models from a hugging face like “DistilBERT” or similar can be employed for this task to provide concise conversation summaries.[Learn more about OpenAI Chat API](https://platform.openai.com/docs/api-reference/chat) [Learn more about hugging face DistilBERT](https://huggingface.co/docs/transformers/v4.41.3/en/model_doc/distilbert#overview)
+  - Email Sequence: Allow users to set automated emails (i.e. user-pre-written emails that are sent to a specific contact after x number of days). We will utilize setTimeout() to send the emails at the specified time. The sending of the emails will be done through the Gmail API. Users could either use pre-written email from Net Nurture or write themself.
+
 
 ## Milestones
 ### Alpha Version
@@ -61,10 +68,11 @@ To meet the additional requirements for our web application, we will implement f
 - **Goals**:
   - Basic UI completed, including dashboard, sign-in/account creation page, notifications pop-up (HTML, CSS)
   - User account creation (OAuth 2.0)
-  - User login/signout
-  - Users can manually add contacts
-  - Users can manually edit contacts (including their respective information)
-  - Frontend for showing notifications
+  - User login/signout.
+  - Users can manually add contacts.
+  - Users can manually edit contacts. (including their respective information)
+  - Implement searching contacts by name.
+  - Implement a filter to display only contacts with specific tags.
 
 ### Beta Version
 - **Date**: Jul 11, 2024, 4:00:00 PM
@@ -72,9 +80,11 @@ To meet the additional requirements for our web application, we will implement f
   - Implement feedback from Alpha
   - Integrate third-party API from Google Gmail, to obtain all contact information
   - User can link their Gmail account
-  - Initial fetch of profile data and conversation data from linked applications, such as Gmail (long-running task)
-  - Reminders are given through dashboard notifications.
+  - The initial fetch of profile data and conversation data from linked applications, such as Gmail (long-running task)
   - Interact with a webhook by Gmail to receive updates. (webhook)
+  - Implement email sequencing which enable users to set automated emails (long-running task).
+  - Reminders are given through dashboard notifications.
+
 
 ### Final Version
 - **Date**: Jul 25, 2024, 4:00:00 PM
