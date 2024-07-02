@@ -6,3 +6,6 @@ Thumbs.db
 node_modules
 uploads
 *.sqlite
+
+# dotenv environment variables file
+.env
