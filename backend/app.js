@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { sequelize } from "./datasource.js";
-import db from "./models/modelLoader.js"; // Updated import statement
+import db from "./models/modelLoader.js";
 
 dotenv.config(); // Load environment variables
 
