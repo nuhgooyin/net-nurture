@@ -2,7 +2,8 @@ import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import { sequelize } from "./datasource.js";
+import sequelize from "./datasource.js";
+import { gmailRouter } from "./routers/gmail-router.js";
 import db from "./models/modelLoader.js";
 
 dotenv.config(); // Load environment variables
@@ -21,6 +22,8 @@ try {
 } catch (error) {
   console.error("Unable to connect to the database:", error);
 }
+
+app.use("/api/gmail", gmailRouter);
 
 // Use authentication routes
 
