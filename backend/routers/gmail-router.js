@@ -4,7 +4,8 @@ import { Message } from "../models/message.js";
 export const gmailRouter = Router();
 
 //
-// Given access token, fetch Gmail messages and store them in the database
+// Fetch Gmail messages from currently authenticated user and store them in the database
+// Precondition: Access token is provided in the request authorization header (i.e., req.headers.authorization)
 //
 gmailRouter.get("/fetch", async (req, res) => {
   let collectedMessages = [];
