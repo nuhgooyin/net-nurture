@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { sequelize } from "./datasource.js";
 import db from "./models/modelLoader.js";
+import { usersRouter } from "./routers/users_router.js";
+import { authenticate } from "./middleware/authenticate.js";
 
 dotenv.config(); // Load environment variables
 
@@ -23,6 +25,7 @@ try {
 }
 
 // Use authentication routes
+app.use("/api/users", usersRouter);
 
 app.listen(PORT, (err) => {
   if (err) console.log(err);
