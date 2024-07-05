@@ -7,3 +7,7 @@
 <div *ngIf="isSignupVisible">
   <app-signup></app-signup>
 </div>
+
+<main
+  [ngClass]="{ 'blur-background': isLoginVisible || isSignupVisible }"
+></main>

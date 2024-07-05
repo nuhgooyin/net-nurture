@@ -1,4 +1,4 @@
-<mat-card>
+<div class="form-container" [ngClass]="{ visible: isVisible }">
   <h2>Sign Up</h2>
   <form (ngSubmit)="onSubmit()">
     <mat-form-field appearance="fill">
@@ -25,4 +25,4 @@
 
     <button mat-raised-button color="primary" type="submit">Sign Up</button>
   </form>
-</mat-card>
+</div>

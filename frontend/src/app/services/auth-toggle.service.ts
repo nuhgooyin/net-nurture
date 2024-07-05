@@ -5,19 +5,23 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthToggleService {
-  private isLoginVisibleSubject = new BehaviorSubject<boolean>(true);
+  private isLoginVisibleSubject = new BehaviorSubject<boolean>(false);
   private isSignupVisibleSubject = new BehaviorSubject<boolean>(false);
 
   isLoginVisible$ = this.isLoginVisibleSubject.asObservable();
   isSignupVisible$ = this.isSignupVisibleSubject.asObservable();
 
-  showLogin(): void {
-    this.isLoginVisibleSubject.next(true);
-    this.isSignupVisibleSubject.next(false);
+  toggleLogin(): void {
+    this.isLoginVisibleSubject.next(!this.isLoginVisibleSubject.value);
+    if (this.isLoginVisibleSubject.value) {
+      this.isSignupVisibleSubject.next(false);
+    }
   }
 
-  showSignup(): void {
-    this.isLoginVisibleSubject.next(false);
-    this.isSignupVisibleSubject.next(true);
+  toggleSignup(): void {
+    this.isSignupVisibleSubject.next(!this.isSignupVisibleSubject.value);
+    if (this.isSignupVisibleSubject.value) {
+      this.isLoginVisibleSubject.next(false);
+    }
   }
 }

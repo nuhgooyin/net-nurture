@@ -13,6 +13,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MaterialModule } from './material.module';
+import { AuthToggleService } from './services/auth-toggle.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { MaterialModule } from './material.module';
     MaterialModule,
     BrowserAnimationsModule,
   ],
-  providers: [provideAnimationsAsync()],
+  providers: [provideAnimationsAsync(), AuthToggleService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

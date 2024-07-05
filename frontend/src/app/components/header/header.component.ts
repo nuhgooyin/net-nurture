@@ -20,10 +20,10 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {}
 
   toggleLogin(): void {
-    this.authToggleService.showLogin();
+    this.authToggleService.toggleLogin();
   }
 
   toggleSignup(): void {
-    this.authToggleService.showSignup();
+    this.authToggleService.toggleSignup();
   }
 }

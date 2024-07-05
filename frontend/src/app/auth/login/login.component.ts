@@ -1,26 +1,25 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { AuthToggleService } from '../../services/auth-toggle.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
-  username: string = ''; // Initialize property
-  password: string = ''; // Initialize property
+export class LoginComponent implements OnInit {
+  username: string = '';
+  password: string = '';
+  isVisible: boolean = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authToggleService: AuthToggleService) {}
+
+  ngOnInit(): void {
+    this.authToggleService.isLoginVisible$.subscribe(
+      (isVisible) => (this.isVisible = isVisible),
+    );
+  }
 
   onSubmit(): void {
-    this.authService.login(this.username, this.password).subscribe(
-      (response) => {
-        console.log('Login successful:', response);
-        // Handle successful login (e.g., navigate to dashboard)
-      },
-      (error) => {
-        console.error('Login error:', error);
-        // Handle login error
-      },
-    );
+    // Handle login submission
   }
 }

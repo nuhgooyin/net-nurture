@@ -1,26 +1,25 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { AuthToggleService } from '../../services/auth-toggle.service';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.scss'],
 })
-export class SignupComponent {
-  username: string = ''; // Initialize property
-  password: string = ''; // Initialize property
+export class SignupComponent implements OnInit {
+  username: string = '';
+  password: string = '';
+  isVisible: boolean = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authToggleService: AuthToggleService) {}
+
+  ngOnInit(): void {
+    this.authToggleService.isSignupVisible$.subscribe(
+      (isVisible) => (this.isVisible = isVisible),
+    );
+  }
 
   onSubmit(): void {
-    this.authService.signup(this.username, this.password).subscribe(
-      (response) => {
-        console.log('Sign up successful:', response);
-        // Handle successful sign-up (e.g., navigate to login)
-      },
-      (error) => {
-        console.error('Sign up error:', error);
-        // Handle sign-up error
-      },
-    );
+    // Handle sign-up submission
   }
 }
