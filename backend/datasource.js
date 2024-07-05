@@ -10,7 +10,6 @@ const dbConfig = config[env];
 
 export const sequelize = new Sequelize(dbConfig);*/
 export const sequelize = new Sequelize({
-    dialect: "sqlite",
-    storage: "microblog.sqlite",
-  });
-  
+  dialect: "sqlite",
+  storage: "microblog.sqlite",
+});
