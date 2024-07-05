@@ -1,8 +1,6 @@
-// middleware/authenticate.js
 import jwt from "jsonwebtoken";
-import db from "../models/modelLoader.js";
-
-const { User } = db;
+import { User } from "../models/user.js";
+import dotenv from "dotenv";
 
 export const authenticate = async (req, res, next) => {
   const token = req.cookies.token;

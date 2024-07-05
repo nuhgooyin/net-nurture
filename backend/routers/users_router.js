@@ -1,9 +1,10 @@
-import { Router } from "express";
+import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import db from "../models/modelLoader.js";
+import { User } from "../models/user.js";
+import { Router } from "express";
+import dotenv from "dotenv";
 
-const { User } = db;
 export const usersRouter = Router();
 
 // Sign-up route
