@@ -13,6 +13,9 @@ header {
   font-size: 48px;
 }
 
+.spacer {
+  flex: 1 1 auto;
+}
 
 .error-box {
   color: red;
