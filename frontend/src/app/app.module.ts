@@ -14,6 +14,8 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MaterialModule } from './material.module';
 import { AuthToggleService } from './services/auth-toggle.service';
+import { GoogleLoginComponent } from './auth/google-login/google-login.component';
+import { GoogleAuthService } from './services/google-auth.service';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { AuthToggleService } from './services/auth-toggle.service';
     HeaderComponent,
     LoginComponent,
     SignupComponent,
+    GoogleLoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,7 @@ import { AuthToggleService } from './services/auth-toggle.service';
     MaterialModule,
     BrowserAnimationsModule,
   ],
-  providers: [provideAnimationsAsync(), AuthToggleService],
+  providers: [provideAnimationsAsync(), AuthToggleService, GoogleAuthService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
