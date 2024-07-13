@@ -1,0 +1,47 @@
+version: "3.7"
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certs:/etc/nginx/certs
+      - ./vhost:/etc/nginx/vhost.d
+      - ./html:/usr/share/nginx/html
+  nginx-proxy-acme:
+    image: nginxproxy/acme-companion
+    container_name: nginx-proxy-acme
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./certs:/etc/nginx/certs
+      - ./vhost:/etc/nginx/vhost.d
+      - ./html:/usr/share/nginx/html
+      - ./acme:/etc/acme.sh
+    environment:
+      - DEFAULT_EMAIL=danduy.nguyen@mail.utoronto.ca
+    depends_on:
+      - nginx-proxy
+    volumes_from:
+      - nginx-proxy
+  frontend:
+    image: ghcr.io/utsc-cscc09-programming-on-the-web/frontend-net-nurture
+    container_name: frontend
+    restart: always
+    expose:
+      - 80
+    environment:
+      - VIRTUAL_HOST=net-nurture.com
+      - LETSENCRYPT_HOST=net-nurture.com
+  backend:
+    image: ghcr.io/utsc-cscc09-programming-on-the-web/backend-net-nurture
+    container_name: backend
+    restart: always
+    expose:
+      - 3000
+    environment:
+      - VIRTUAL_HOST=api.net-nurture.com
+      - LETSENCRYPT_HOST=api.net-nurture.com

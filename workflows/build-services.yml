@@ -1,0 +1,30 @@
+name: Deploy
+
+on:
+  push:
+    # Only run this workflow if it is a commit to main.
+    branches:
+      - main
+  # Only trigger, when the build workflow succeeded
+  workflow_run:
+    workflows: ["frontend", "backend"]
+    types:
+      - completed
+
+jobs:
+  # Deploy on VM
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: run compose up
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: nuhgooyin.me
+          username: nuhgooyin
+          key: ${{ secrets.P_KEY }}
+          port: 22
+          script: |
+            echo "${{ secrets.CR_PAT }}" | sudo docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+            sudo docker compuse down
+            sudo docker compose pull && docker compose up
