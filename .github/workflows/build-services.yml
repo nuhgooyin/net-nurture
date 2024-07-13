@@ -22,5 +22,5 @@ jobs:
           port: 22
           script: |
             echo "${{ secrets.CR_PAT }}" | sudo docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
-            sudo docker compuse down
+            sudo docker compose down
             sudo docker compose pull && docker compose up
