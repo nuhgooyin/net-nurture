@@ -5,9 +5,9 @@ on:
     # Only run this workflow if it is a commit to main.
     branches:
       - main
-    # Only run this workflow if the commit has modified files from backend
-    paths:
-      - backend/**
+    # # Only run this workflow if the commit has modified files from backend
+    # paths:
+    #   - backend/**
 
 env:
   IMAGE_NAME: backend-net-nurture
