@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:3000/api/users';
+  private baseUrl = 'https://api.net-nurture.com/api/users';
 
   constructor(private http: HttpClient) {}
 

@@ -8,14 +8,14 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class ApiService {
-  endpoint = 'http://localhost:3000';
+  endpoint = 'https://api.net-nurture.com';
   //endpoint = environment.apiEndpoint;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getMessages(): Observable<{ messages: Message[] }> {
     return this.http.get<{ messages: Message[] }>(
-      this.endpoint + `/api/messages`
+      this.endpoint + `/api/messages`,
     );
   }
 }
