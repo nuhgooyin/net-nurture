@@ -22,5 +22,6 @@ export const authenticateGoogleToken = (req, res, next) => {
   if (!token) {
     return res.status(401).json({ error: "Unauthorized" });
   }
+  req.googleToken = token;
   next();
 };
