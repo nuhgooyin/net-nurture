@@ -16,3 +16,14 @@ export const authenticate = async (req, res, next) => {
     return res.status(401).json({ error: "Unauthorized" });
   }
 };
+
+export const authenticateGoogleToken = (req, res, next) => {
+  const token = req.cookies.googleToken;
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  // Optionally, verify the token here with Google if needed
+  req.googleToken = token;
+  next();
+};
