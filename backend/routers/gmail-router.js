@@ -1,10 +1,13 @@
 import { Router } from "express";
 import { Message } from "../models/message.js";
-import { authenticateGoogleToken } from "../middleware/authenticate.js";
+import {
+  authenticateGoogleToken,
+  authorizeGoogleToken,
+} from "../middleware/authenticate.js";
 
 export const gmailRouter = Router();
 
-gmailRouter.get("/fetch", authenticateGoogleToken, async (req, res) => {
+gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
   let collectedMessages = [];
 
   // Fetch raw Gmail messages
@@ -12,7 +15,7 @@ gmailRouter.get("/fetch", authenticateGoogleToken, async (req, res) => {
     `https://gmail.googleapis.com/gmail/v1/users/me/messages`,
     {
       method: "GET",
-      headers: { authorization: `Bearer ${req.googleToken}` },
+      headers: { authorization: `Bearer ${req.accessToken}` },
     }
   ).then((res) => res.json());
 
@@ -33,7 +36,7 @@ gmailRouter.get("/fetch", authenticateGoogleToken, async (req, res) => {
       `https://gmail.googleapis.com/gmail/v1/users/me/messages/${message.id}`,
       {
         method: "GET",
-        headers: { authorization: `Bearer ${req.googleToken}` },
+        headers: { authorization: `Bearer ${req.accessToken}` },
       }
     ).then((res) => res.json());
 

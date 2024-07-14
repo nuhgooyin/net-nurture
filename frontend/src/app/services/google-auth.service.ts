@@ -1,6 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 declare const google: any;
 
@@ -14,6 +15,8 @@ export class GoogleAuthService {
   constructor(
     private router: Router,
     private http: HttpClient,
+    private ngZone: NgZone,
+    private snackBar: MatSnackBar,
   ) {
     google.accounts.id.initialize({
       client_id: this.clientId,
@@ -22,29 +25,62 @@ export class GoogleAuthService {
   }
 
   signIn(): void {
-    google.accounts.id.prompt();
+    google.accounts.oauth2
+      .initCodeClient({
+        client_id: this.clientId,
+        scope: 'https://www.googleapis.com/auth/gmail.readonly',
+        ux_mode: 'popup',
+        callback: (response: any) => this.handleOAuthResponse(response),
+      })
+      .requestCode();
   }
 
   handleCredentialResponse(response: any): void {
     console.log('Credential Response:', response);
-    const token = response.credential;
+  }
+
+  handleOAuthResponse(response: any): void {
+    const code = response.code;
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-Requested-With': 'XmlHttpRequest',
+    });
+
     this.http
-      .post('http://localhost:3000/api/google-auth/verify-token', { token })
+      .post(
+        'http://localhost:3000/api/google-auth/verify-code',
+        `code=${code}`,
+        { headers, withCredentials: true },
+      )
       .subscribe(
         (res: any) => {
-          // Successfully authenticated
-          this.router.navigate(['/']);
+          this.ngZone.run(() => {
+            this.router.navigate(['/']);
+            this.snackBar.open('linked your gmail successful!', 'Close', {
+              duration: 3000,
+            });
+            this.fetchGmailMessages();
+          });
         },
         (err: any) => {
           console.error('Error during sign-in', err);
-          alert('An error occurred during sign-in. Please try again.');
+          this.snackBar.open(
+            'An error occurred during sign-in. Please try again.',
+            'Close',
+            { duration: 3000 },
+          );
         },
       );
   }
 
   public signOut(): void {
     this.http
-      .post('http://localhost:3000/api/google-auth/signout', {})
+      .post(
+        'http://localhost:3000/api/google-auth/signout',
+        {},
+        { withCredentials: true },
+      )
       .subscribe(
         () => {
           this.router.navigate(['/']);
@@ -57,10 +93,15 @@ export class GoogleAuthService {
   }
 
   public fetchGmailMessages() {
-    return this.http
-      .get('http://localhost:3000/api/gmail/fetch')
-      .subscribe((error) => {
-        console.error('Error fetching Gmail messages:', error);
-      });
+    this.http
+      .get('http://localhost:3000/api/gmail/fetch', { withCredentials: true })
+      .subscribe(
+        (res: any) => {
+          console.log('Fetched Gmail messages:', res.messages);
+        },
+        (error) => {
+          console.error('Error fetching Gmail messages:', error);
+        },
+      );
   }
 }
