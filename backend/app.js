@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import { sequelize } from "./datasource.js";
 import { gmailRouter } from "./routers/gmail-router.js";
 import { messagesRouter } from "./routers/messages_router.js";
-import { googleAuthRouter } from "./routes/googleAuthRouter.js";
+import { googleAuthRouter } from "./routers/google_auth_router.js";
 //import db from "./models/modelLoader.js";
 import cors from "cors";
 

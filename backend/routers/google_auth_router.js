@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { verifyGoogleToken } from "../controllers/googleAuthController.js";
+import {
+  verifyGoogleToken,
+  signOut,
+} from "../controllers/googleAuthController.js";
 
 export const googleAuthRouter = Router();
 
