@@ -1,26 +1,34 @@
-import fetch from "node-fetch";
+// controllers/googleAuthController.js
+import { OAuth2Client } from "google-auth-library";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 export const verifyGoogleToken = async (req, res) => {
-  const token = req.body.token;
+  const { token } = req.body;
 
-  if (!token) {
-    return res.status(400).json({ error: "Token is required" });
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+
+    res.cookie("googleToken", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Set secure flag only in production
+      sameSite: "Lax",
+    });
+
+    res.status(200).json({ message: "Successfully authenticated" });
+  } catch (error) {
+    res.status(401).json({ error: "Invalid token" });
   }
-  const response = await fetch(
-    `https://oauth2.googleapis.com/tokeninfo?id_token=${token}`
-  );
-  const data = await response.json();
+};
 
-  if (data.error) {
-    return res.status(401).json({ error: "Invalid token" });
-  }
-
-  res.cookie("googleToken", token, {
-    httpOnly: true, // Cookie cannot be accessed via JavaScript
-    secure: true, // Ensure to use HTTPS
-    sameSite: "Strict", // Prevent CSRF attacks
-    maxAge: 3600000, // 1 hour in milliseconds
-  });
-
-  res.json({ message: "Token verified and stored" });
+export const signOut = (req, res) => {
+  res.clearCookie("googleToken");
+  res.status(200).json({ message: "Signed out successfully" });
 };
