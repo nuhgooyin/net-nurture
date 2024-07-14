@@ -1,4 +1,4 @@
-name: Deploy
+name: Redeploy
 
 on:
   # Only trigger, when the build workflow succeeded
