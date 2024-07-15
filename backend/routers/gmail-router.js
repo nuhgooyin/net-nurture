@@ -1,28 +1,21 @@
 import { Router } from "express";
 import { Message } from "../models/message.js";
+import {
+  authenticateGoogleToken,
+  authorizeGoogleToken,
+} from "../middleware/authenticate.js";
 
 export const gmailRouter = Router();
 
-//
-// Fetch Gmail messages from currently authenticated user and store them in the database
-// Precondition: Access token is provided in the request authorization header (i.e., req.headers.authorization)
-//
-gmailRouter.get("/fetch", async (req, res) => {
+gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
   let collectedMessages = [];
-
-  // Check if access token is provided
-  if (req.headers.authorization === undefined) {
-    return res.status(422).json({
-      error: "Invalid authorization. Expected access token.",
-    });
-  }
 
   // Fetch raw Gmail messages
   let gmailRes = await fetch(
     `https://gmail.googleapis.com/gmail/v1/users/me/messages`,
     {
       method: "GET",
-      headers: { authorization: req.headers.authorization },
+      headers: { authorization: `Bearer ${req.accessToken}` },
     }
   ).then((res) => res.json());
 
@@ -43,7 +36,7 @@ gmailRouter.get("/fetch", async (req, res) => {
       `https://gmail.googleapis.com/gmail/v1/users/me/messages/${message.id}`,
       {
         method: "GET",
-        headers: { authorization: req.headers.authorization },
+        headers: { authorization: `Bearer ${req.accessToken}` },
       }
     ).then((res) => res.json());
 
