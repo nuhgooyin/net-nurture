@@ -5,6 +5,7 @@ import {
   authorizeGoogleToken,
 } from "../middleware/authenticate.js";
 
+
 export const gmailRouter = Router();
 
 gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
@@ -98,5 +99,35 @@ gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
   // Return the collected messages
   return res.json({
     messages: collectedMessages,
+  });
+});
+
+gmailRouter.post("/send", authorizeGoogleToken, async (req, res) => {
+  const { sender, reciever, subject, content } = req.body;
+  const message =
+    `From: ${sender}\r\n` +
+    `To: ${reciever}\r\n` +
+    `Subject: ${subject}\r\n\r\n` +
+    `${content}`;
+
+
+  // The body needs to be base64url encoded.
+  const encodedMessage = btoa(message);
+  const saferEncodedMessage = encodedMessage.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+  // Send raw Gmail message
+  let messageData = await fetch(
+    `https://gmail.googleapis.com/gmail/v1/users/me/messages/send`,
+    {
+      method: "POST",
+      headers: { authorization: `Bearer ${req.accessToken}` },
+      body: JSON.stringify({
+        raw: saferEncodedMessage
+      }),
+    }
+  ).then((res) => res.json());
+
+  return res.json({
+    messageData: messageData,
   });
 });
