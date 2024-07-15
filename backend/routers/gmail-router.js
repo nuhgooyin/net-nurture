@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { Message } from "../models/message.js";
+import { Contact } from "../models/contact.js";
 import {
   authenticateGoogleToken,
   authorizeGoogleToken,
@@ -9,6 +10,7 @@ export const gmailRouter = Router();
 
 gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
   let collectedMessages = [];
+  let collectedContacts = [];
 
   // Fetch raw Gmail messages
   let gmailRes = await fetch(
@@ -68,7 +70,7 @@ gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
         .replace(/_/g, "/")
     );
 
-    // Construct cleaned message & add to collected messages
+    // Construct cleaned message
     let cleanedMessage = {
       fullContent: foundMessageContent,
       previewContent: messageData.snippet,
@@ -78,9 +80,34 @@ gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
     };
     collectedMessages.push(cleanedMessage);
 
-    // Store the messages on the database
+    let cleanedContact = {
+      email: foundContactEmail,
+      name: foundContactName,
+    };
+    collectedContacts.push(cleanedContact);
+
+    // Store the contact and associate with message
     try {
-      await Message.create(cleanedMessage);
+      // Check if the contact already exists
+      let contact = await Contact.findOne({
+        where: { email: foundContactEmail },
+      });
+      if (!contact) {
+        // If contact doesn't exist, create a new one
+        contact = await Contact.create({
+          email: foundContactEmail,
+          name: foundContactName,
+        });
+      }
+
+      // Store the message and associate with the contact
+      const newMessage = await Message.create({
+        fullContent: foundMessageContent,
+        previewContent: messageData.snippet,
+        dateRecieved: messageDate,
+        contactEmail: foundContactEmail,
+        contactId: contact.id,
+      });
     } catch (e) {
       console.log(e);
       if (e.name === "SequelizeForeignKeyConstraintError") {
@@ -98,5 +125,6 @@ gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
   // Return the collected messages
   return res.json({
     messages: collectedMessages,
+    contacts: collectedContacts,
   });
 });
