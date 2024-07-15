@@ -98,6 +98,7 @@ export class GoogleAuthService {
       .subscribe(
         (res: any) => {
           console.log('Fetched Gmail messages:', res.messages);
+          console.log('Fetched Gmail contacts:', res.contacts);
         },
         (error) => {
           console.error('Error fetching Gmail messages:', error);
