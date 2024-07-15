@@ -28,7 +28,7 @@ export class GoogleAuthService {
     google.accounts.oauth2
       .initCodeClient({
         client_id: this.clientId,
-        scope: 'https://www.googleapis.com/auth/gmail.readonly',
+        scope: 'https://www.googleapis.com/auth/gmail.modify',
         ux_mode: 'popup',
         callback: (response: any) => this.handleOAuthResponse(response),
       })
@@ -61,6 +61,7 @@ export class GoogleAuthService {
               duration: 3000,
             });
             this.fetchGmailMessages();
+            //this.sendGmailMessage();
           });
         },
         (err: any) => {
@@ -104,4 +105,24 @@ export class GoogleAuthService {
         },
       );
   }
+  /*
+  public sendGmailMessage() {
+    this.http
+      .post(
+        'http://localhost:3000/api/gmail/send',
+        {sender: "j8977748@gmail.com", 
+          reciever: "j8977748@gmail.com", 
+          subject: "Test Subject", 
+          content: "Test Email Content"},
+        { withCredentials: true },
+      )
+      .subscribe(
+        (res: any) => {
+          console.log('Sent Gmail message:', res.messageData);
+        },
+        (error) => {
+          console.error('Error sending Gmail message:', error);
+        },
+      );
+  }*/
 }
