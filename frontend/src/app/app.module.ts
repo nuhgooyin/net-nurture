@@ -16,6 +16,7 @@ import { MaterialModule } from './material.module';
 import { AuthToggleService } from './services/auth-toggle.service';
 import { GoogleLoginComponent } from './auth/google-login/google-login.component';
 import { GoogleAuthService } from './services/google-auth.service';
+import { GmailSendComponent } from './components/gmail-send/gmail-send.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { GoogleAuthService } from './services/google-auth.service';
     LoginComponent,
     SignupComponent,
     GoogleLoginComponent,
+    GmailSendComponent,
   ],
   imports: [
     BrowserModule,
