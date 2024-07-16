@@ -106,24 +106,4 @@ export class GoogleAuthService {
         },
       );
   }
-  
-  public sendGmailMessage(reciever: string, subject: string, content: string) {
-    this.http
-      .post(
-        'http://localhost:3000/api/gmail/send',
-        {sender: "j8977748@gmail.com", 
-          reciever: reciever, 
-          subject: subject, 
-          content: content},
-        { withCredentials: true },
-      )
-      .subscribe(
-        (res: any) => {
-          console.log('Sent Gmail message:', res.messageData);
-        },
-        (error) => {
-          console.error('Error sending Gmail message:', error);
-        },
-      );
-  }
 }

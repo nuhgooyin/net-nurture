@@ -14,6 +14,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { MaterialModule } from './material.module';
 import { GoogleLoginComponent } from './auth/google-login/google-login.component';
 import { GoogleAuthService } from './services/google-auth.service';
+import { GmailSendService } from './services/gmail-send.service';
 import { GmailSendComponent } from './pages/gmail-send/gmail-send.component';
 
 @NgModule({
@@ -36,7 +37,7 @@ import { GmailSendComponent } from './pages/gmail-send/gmail-send.component';
     MaterialModule,
     BrowserAnimationsModule,
   ],
-  providers: [GoogleAuthService],
+  providers: [GoogleAuthService, GmailSendService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
