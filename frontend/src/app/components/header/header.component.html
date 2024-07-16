@@ -20,9 +20,13 @@
         </button>
       </li>
       <li *ngIf="isLoggedIn"><app-logout></app-logout></li>
-      <li *ngIf="isLoggedIn"><app-google-login></app-google-login></li>
-      <li *ngIf="isLoggedIn"><app-gmail-fetch></app-gmail-fetch></li>
-      <li *ngIf="isLoggedIn">
+      <li *ngIf="isLoggedIn && !isGoogleAuthenticated">
+        <app-google-login></app-google-login>
+      </li>
+      <li *ngIf="isLoggedIn && isGoogleAuthenticated">
+        <app-gmail-fetch></app-gmail-fetch>
+      </li>
+      <li *ngIf="isLoggedIn && isGoogleAuthenticated">
         <button mat-raised-button color="primary" routerLink="/gmail-send">
           <mat-icon>send</mat-icon>
           Send Gmail
