@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/user.js";
 import { Router } from "express";
 import dotenv from "dotenv";
+import { authenticate } from "../middleware/authenticate.js";
 
 dotenv.config();
 
@@ -52,4 +53,8 @@ usersRouter.post("/signout", (req, res) => {
   res.clearCookie("token");
   res.clearCookie("accessToken");
   res.json({ message: "Signed out" });
+});
+
+usersRouter.get("/verify-auth", authenticate, (req, res) => {
+  res.json({ message: "Authenticated" });
 });

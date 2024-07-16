@@ -2,6 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 declare const google: any;
 
@@ -11,6 +12,7 @@ declare const google: any;
 export class GoogleAuthService {
   private clientId =
     '1058614153442-ud88lvna00od88q7qc3covgdr8s89bc6.apps.googleusercontent.com';
+  private googleAuthenticated = new BehaviorSubject<boolean>(false);
 
   constructor(
     private router: Router,
@@ -56,8 +58,9 @@ export class GoogleAuthService {
       .subscribe(
         (res: any) => {
           this.ngZone.run(() => {
+            this.googleAuthenticated.next(true);
             this.router.navigate(['/dashboard']);
-            this.snackBar.open('linked your gmail successful!', 'Close', {
+            this.snackBar.open('Linked your Gmail successfully!', 'Close', {
               duration: 3000,
             });
             this.fetchGmailMessages();
@@ -74,7 +77,7 @@ export class GoogleAuthService {
       );
   }
 
-  public fetchGmailMessages() {
+  fetchGmailMessages(): void {
     this.http
       .get('https://api.net-nurture.com/api/gmail/fetch', {
         withCredentials: true,
@@ -88,5 +91,9 @@ export class GoogleAuthService {
           console.error('Error fetching Gmail messages:', error);
         },
       );
+  }
+
+  isGoogleAuthenticated(): Observable<boolean> {
+    return this.googleAuthenticated.asObservable();
   }
 }
