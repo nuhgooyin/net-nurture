@@ -50,5 +50,6 @@ usersRouter.post("/signin", async (req, res) => {
 // Sign-out route
 usersRouter.post("/signout", (req, res) => {
   res.clearCookie("token");
+  res.clearCookie("accessToken");
   res.json({ message: "Signed out" });
 });
