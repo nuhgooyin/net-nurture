@@ -6,16 +6,15 @@ import {
   authorizeGoogleToken,
 } from "../middleware/authenticate.js";
 
-
 export const gmailRouter = Router();
 
 gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
   let collectedMessages = [];
   let collectedContacts = [];
 
-  // Fetch raw Gmail messages
+  // Fetch raw Gmail messages (inbox only)
   let gmailRes = await fetch(
-    `https://gmail.googleapis.com/gmail/v1/users/me/messages`,
+    `https://gmail.googleapis.com/gmail/v1/users/me/messages?q=in:inbox`,
     {
       method: "GET",
       headers: { authorization: `Bearer ${req.accessToken}` },
@@ -64,12 +63,20 @@ gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
       }
     }
 
-    // Find the content of the message, and display it as a string
-    let foundMessageContent = atob(
-      messageData.payload.parts[0].body.data
-        .replace(/-/g, "+")
-        .replace(/_/g, "/")
-    );
+    // Check if messageData.payload.parts exists and is an array
+    let foundMessageContent = "";
+    if (messageData.payload.parts && Array.isArray(messageData.payload.parts)) {
+      foundMessageContent = atob(
+        messageData.payload.parts[0].body.data
+          .replace(/-/g, "+")
+          .replace(/_/g, "/")
+      );
+    } else {
+      // Handle cases where the message body is in a different format
+      foundMessageContent = atob(
+        messageData.payload.body.data.replace(/-/g, "+").replace(/_/g, "/")
+      );
+    }
 
     // Construct cleaned message
     let cleanedMessage = {
@@ -138,10 +145,12 @@ gmailRouter.post("/send", authorizeGoogleToken, async (req, res) => {
     `Subject: ${subject}\r\n\r\n` +
     `${content}`;
 
-
   // The body needs to be base64url encoded.
   const encodedMessage = btoa(message);
-  const saferEncodedMessage = encodedMessage.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const saferEncodedMessage = encodedMessage
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
 
   // Send raw Gmail message
   let messageData = await fetch(
@@ -150,7 +159,7 @@ gmailRouter.post("/send", authorizeGoogleToken, async (req, res) => {
       method: "POST",
       headers: { authorization: `Bearer ${req.accessToken}` },
       body: JSON.stringify({
-        raw: saferEncodedMessage
+        raw: saferEncodedMessage,
       }),
     }
   ).then((res) => res.json());
