@@ -16,16 +16,20 @@ import { MaterialModule } from './material.module';
 import { AuthToggleService } from './services/auth-toggle.service';
 import { GoogleLoginComponent } from './auth/google-login/google-login.component';
 import { GoogleAuthService } from './services/google-auth.service';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ContactComponent,
     MessageComponent,
     IndexComponent,
     HeaderComponent,
     LoginComponent,
     SignupComponent,
     GoogleLoginComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,

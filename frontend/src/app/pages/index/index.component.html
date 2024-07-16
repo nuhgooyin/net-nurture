@@ -1,3 +1,47 @@
 <div class="message-container" *ngFor="let message of messages">
-  <app-message class="row message align-items-center" [message]="message"></app-message>
+  <app-message
+    class="row message align-items-center"
+    [message]="message"
+  ></app-message>
+</div>
+
+<div class="container">
+  <img
+    src="greenish-donut.png"
+    loading="lazy"
+    width="629"
+    alt=""
+    class="green-donut background-donut"
+  />
+  <img
+    src="https://cdn.prod.website-files.com/665540e04066cfa87117498f/6696051371c27deafdb1230e_orange-donut.png"
+    loading="lazy"
+    width="238"
+    alt=""
+    class="orange-donut-2 background-donut"
+  />
+  <div class="foreground-parent">
+    <img
+      src="https://cdn.prod.website-files.com/665540e04066cfa87117498f/669604930486f786b67c270d_stock-photo-from-canva.png"
+      loading="lazy"
+      alt=""
+    />
+    <div class="intro-text">
+      <h1><b>User-Friendly Personal CRM Solution</b></h1>
+      <p>
+        We've all heard about enterprise-level CRM solutions, but what about one
+        for individual-use? Introducing Net-Nurture.
+      </p>
+      <button class="btn-custom-theme" (click)="toggleSignup()">
+        <h6><b>Get Started</b></h6>
+      </button>
+    </div>
+  </div>
+  <img
+    src="https://cdn.prod.website-files.com/665540e04066cfa87117498f/6696051371c27deafdb1230e_orange-donut.png"
+    loading="lazy"
+    width="238"
+    alt=""
+    class="orange-donut background-donut"
+  />
 </div>

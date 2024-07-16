@@ -26,4 +26,12 @@ export class HeaderComponent implements OnInit {
   toggleSignup(): void {
     this.authToggleService.toggleSignup();
   }
+
+  goToDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
+
+  goToHome() {
+    this.router.navigate(['/']);
+  }
 }
