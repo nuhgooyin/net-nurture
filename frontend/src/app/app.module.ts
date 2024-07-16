@@ -18,6 +18,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { GmailSendService } from './services/gmail-send.service';
 import { GmailSendComponent } from './pages/gmail-send/gmail-send.component';
+import { GmailFetchComponent } from './pages/gmail-fetch/gmail-fetch.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { GmailSendComponent } from './pages/gmail-send/gmail-send.component';
     GoogleLoginComponent,
     DashboardComponent,
     GmailSendComponent,
+    GmailFetchComponent,
   ],
   imports: [
     BrowserModule,
