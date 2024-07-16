@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -16,6 +16,7 @@ import { MaterialModule } from './material.module';
 import { AuthToggleService } from './services/auth-toggle.service';
 import { GoogleLoginComponent } from './auth/google-login/google-login.component';
 import { GoogleAuthService } from './services/google-auth.service';
+import { GmailSendComponent } from './pages/gmail-send/gmail-send.component';
 
 @NgModule({
   declarations: [
@@ -26,12 +27,23 @@ import { GoogleAuthService } from './services/google-auth.service';
     LoginComponent,
     SignupComponent,
     GoogleLoginComponent,
+    GmailSendComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
+    MaterialModule,
+    BrowserAnimationsModule,
+  ],
+  exports: [
+    BrowserModule,
+    HttpClientModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     MaterialModule,
     BrowserAnimationsModule,
   ],
