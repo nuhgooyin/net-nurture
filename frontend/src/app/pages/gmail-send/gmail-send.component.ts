@@ -41,7 +41,7 @@ export class GmailSendComponent implements OnInit {
             .subscribe(
               (response) => {
                 this.snackBar.open('Email sent successfully!', 'Close', {
-                  duration: 3000,
+                  duration: 10000,
                 });
               },
               (error) => {
@@ -56,7 +56,7 @@ export class GmailSendComponent implements OnInit {
         this.snackBar.open('Email scheduled successfully!', 'Close', {
           duration: 3000,
         });
-        this.router.navigate(['/']);
+        this.router.navigate(['/dashboard']);
       } else {
         this.snackBar.open('Scheduled time must be in the future.', 'Close', {
           duration: 3000,

@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
       this.authService.signin(username, password).subscribe(
         (response) => {
           this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
-          this.router.navigate(['/']); // Redirect to the main page or a dashboard after successful login
+          this.router.navigate(['/dashboard']);
         },
         (error) => {
           this.snackBar.open('Login failed: ' + error.error.error, 'Close', {

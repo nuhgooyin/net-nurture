@@ -56,12 +56,11 @@ export class GoogleAuthService {
       .subscribe(
         (res: any) => {
           this.ngZone.run(() => {
-            this.router.navigate(['/']);
+            this.router.navigate(['/dashboard']);
             this.snackBar.open('linked your gmail successful!', 'Close', {
               duration: 3000,
             });
             this.fetchGmailMessages();
-            //this.sendGmailMessage();
           });
         },
         (err: any) => {

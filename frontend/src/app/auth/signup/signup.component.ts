@@ -32,7 +32,7 @@ export class SignupComponent implements OnInit {
       this.authService.signup(username, password).subscribe(
         (response) => {
           this.snackBar.open('Signup successful!', 'Close', { duration: 3000 });
-          this.router.navigate(['/']);
+          this.router.navigate(['/login']);
         },
         (error) => {
           this.snackBar.open('Signup failed: ' + error.error.error, 'Close', {

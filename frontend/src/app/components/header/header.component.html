@@ -18,9 +18,11 @@
     <a routerLink="/" class="header-title">Net-Nurture</a>
   </span>
   <span class="spacer"></span>
-  <a routerLink="/gmail-send" id="gmail-send-button" class="btn hidden"
-    >Send Gmail</a
-  >
+
+  <button mat-raised-button color="primary" routerLink="/gmail-send">
+    <mat-icon>mail</mat-icon>
+    Send Gmail
+  </button>
   <button mat-raised-button color="primary" routerLink="/login">
     <mat-icon>login</mat-icon>
     Login
