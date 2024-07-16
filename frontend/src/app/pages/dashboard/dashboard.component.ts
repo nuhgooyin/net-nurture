@@ -15,13 +15,5 @@ export class DashboardComponent implements OnInit {
 
   constructor(private api: ApiService) {}
 
-  ngOnInit(): void {
-    this.getMessages();
-  }
-
-  getMessages() {
-    this.api.getMessages().subscribe((response) => {
-      this.messages = response.messages;
-    });
-  }
+  ngOnInit(): void {}
 }
