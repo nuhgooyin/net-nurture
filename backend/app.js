@@ -10,7 +10,7 @@ import { googleAuthRouter } from "./routers/google_auth_router.js";
 import cors from "cors";
 
 import { usersRouter } from "./routers/users_router.js";
-import { authenticate } from "./middleware/authenticate.js";
+import { contactRouter } from "./routers/contact-router.js";
 dotenv.config(); // Load environment variables
 
 const PORT = process.env.PORT || 3000;
@@ -38,6 +38,7 @@ try {
 
 app.use("/api/gmail", gmailRouter);
 app.use("/api/messages", messagesRouter);
+app.use("/api/contacts", contactRouter);
 
 // Use authentication routes
 app.use("/api/users", usersRouter);
