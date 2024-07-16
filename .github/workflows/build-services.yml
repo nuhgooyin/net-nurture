@@ -2,6 +2,8 @@ name: Redeploy
 
 on:
   push:
+    branches:
+      - deployment
   # Only trigger, when the build workflow succeeded
   workflow_run:
     workflows: ["frontend", "backend"]
