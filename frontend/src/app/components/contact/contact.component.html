@@ -1,6 +1,9 @@
-<div class="col-1 contact-user">
-  <div class="contact-email">{{ contact.contactEmail }}</div>
-</div>
-<div class="col-auto message-content">
-  {{ contact.previewContent }}
+<div class="contact-box">
+  <p>{{ contact.name }}</p>
+  <p>{{ contact.email }}</p>
+  <p>{{ contact.tags || "N/A" }}</p>
+  <p>{{ contact.dateOfLastConvo || "N/A" }}</p>
+  <p class="summary-text">
+    {{ contact.previewContent || "No preview available" }}
+  </p>
 </div>

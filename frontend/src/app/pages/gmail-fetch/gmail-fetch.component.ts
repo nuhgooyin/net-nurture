@@ -25,6 +25,7 @@ export class GmailFetchComponent {
           this.snackBar.open('Emails fetched successfully ', 'Close', {
             duration: 5000,
           });
+          this.router.navigate(['/dashboard']);
         },
         (error) => {
           this.snackBar.open('Error fetch emails: Unauthorized', 'Close', {
