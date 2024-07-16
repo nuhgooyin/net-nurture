@@ -1,3 +1,4 @@
+// src/app/services/auth.service.ts
 import { catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -41,16 +42,14 @@ export class AuthService {
       );
   }
 
-  signout(): void {
-    this.http
+  logout(): Observable<any> {
+    return this.http
       .post(`${this.baseUrl}/signout`, {}, { withCredentials: true })
-      .subscribe(
-        () => {
-          // Handle signout if necessary, e.g., navigate to login page
-        },
-        (error) => {
-          console.error('Signout error:', error);
-        },
+      .pipe(
+        catchError((error) => {
+          console.error('Logout error:', error);
+          return throwError(error);
+        }),
       );
   }
 }

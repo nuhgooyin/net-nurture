@@ -74,24 +74,6 @@ export class GoogleAuthService {
       );
   }
 
-  public signOut(): void {
-    this.http
-      .post(
-        'http://localhost:3000/api/google-auth/signout',
-        {},
-        { withCredentials: true },
-      )
-      .subscribe(
-        () => {
-          this.router.navigate(['/']);
-        },
-        (err: any) => {
-          console.error('Error during sign-out', err);
-          alert('An error occurred during sign-out. Please try again.');
-        },
-      );
-  }
-
   public fetchGmailMessages() {
     this.http
       .get('http://localhost:3000/api/gmail/fetch', { withCredentials: true })
