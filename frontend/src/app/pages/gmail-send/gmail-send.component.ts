@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GmailSendService } from '../../services/gmail-send.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-gmail-send',
@@ -15,6 +16,7 @@ export class GmailSendComponent implements OnInit {
     private fb: FormBuilder,
     private gmailSendService: GmailSendService,
     private snackBar: MatSnackBar,
+    private router: Router,
   ) {
     this.gmailsendForm = this.fb.group({
       reciever: ['', Validators.required],
@@ -46,7 +48,7 @@ export class GmailSendComponent implements OnInit {
                 this.snackBar.open(
                   'Error sending email: ' + error.error.message,
                   'Close',
-                  { duration: 3000 },
+                  { duration: 10000 },
                 );
               },
             );
@@ -54,6 +56,7 @@ export class GmailSendComponent implements OnInit {
         this.snackBar.open('Email scheduled successfully!', 'Close', {
           duration: 3000,
         });
+        this.router.navigate(['/']);
       } else {
         this.snackBar.open('Scheduled time must be in the future.', 'Close', {
           duration: 3000,
