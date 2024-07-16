@@ -106,11 +106,11 @@ export class GoogleAuthService {
       );
   }
   
-  public sendGmailMessage(sender: string, reciever: string, subject: string, content: string) {
+  public sendGmailMessage(reciever: string, subject: string, content: string) {
     this.http
       .post(
         'http://localhost:3000/api/gmail/send',
-        {sender: sender, 
+        {sender: "j8977748@gmail.com", 
           reciever: reciever, 
           subject: subject, 
           content: content},
