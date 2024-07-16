@@ -26,7 +26,7 @@ export class GmailSendComponent implements OnInit {
 
   sendGmail(reciever: string, subject: string, content: string, schedule: any): void {
     var scheduledDate = new Date(schedule);
-    console.log("Sending email at" + scheduledDate);
+    console.log("Sending email at " + scheduledDate);
     const timeLeft =  scheduledDate.getTime() - Date.now();
     const timeoutId = setTimeout(() => {
       this.googleAuthService.sendGmailMessage(reciever, subject, content);
