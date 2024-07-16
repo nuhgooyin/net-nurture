@@ -8,7 +8,7 @@ import { Contact } from '../classes/contact';
   providedIn: 'root',
 })
 export class ContactService {
-  private apiUrl = 'http://localhost:3000/api/contacts';
+  private apiUrl = 'https://api.net-nurture.com/api/contacts';
   private contactsSubject = new BehaviorSubject<Contact[]>([]);
   contacts$ = this.contactsSubject.asObservable();
 

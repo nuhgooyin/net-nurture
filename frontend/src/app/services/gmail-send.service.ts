@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class GmailSendService {
-  private baseUrl = 'http://localhost:3000/api/gmail';
+  private baseUrl = 'https://api.net-nurture.com/api/gmail';
 
   constructor(private http: HttpClient) {}
 

@@ -49,7 +49,7 @@ export class GoogleAuthService {
 
     this.http
       .post(
-        'http://localhost:3000/api/google-auth/verify-code',
+        'https://api.net-nurture.com/api/google-auth/verify-code',
         `code=${code}`,
         { headers, withCredentials: true },
       )
@@ -76,7 +76,9 @@ export class GoogleAuthService {
 
   public fetchGmailMessages() {
     this.http
-      .get('http://localhost:3000/api/gmail/fetch', { withCredentials: true })
+      .get('https://api.net-nurture.com/api/gmail/fetch', {
+        withCredentials: true,
+      })
       .subscribe(
         (res: any) => {
           console.log('Fetched Gmail messages:', res.messages);

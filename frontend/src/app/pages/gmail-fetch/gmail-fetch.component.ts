@@ -20,7 +20,9 @@ export class GmailFetchComponent {
 
   public fetchGmailMessages(): void {
     this.http
-      .get('http://localhost:3000/api/gmail/fetch', { withCredentials: true })
+      .get('https://api.net-nurture.com/api/gmail/fetch', {
+        withCredentials: true,
+      })
       .subscribe(
         (res: any) => {
           console.log('Fetched Gmail messages:', res.messages);

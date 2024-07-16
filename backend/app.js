@@ -46,5 +46,5 @@ app.use("/api/google-auth", googleAuthRouter);
 
 app.listen(PORT, (err) => {
   if (err) console.log(err);
-  else console.log("HTTP server on http://localhost:%s", PORT);
+  else console.log("HTTP server on http://api.net-nurture.com:%s", PORT);
 });
