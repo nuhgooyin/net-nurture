@@ -1,6 +1,6 @@
 // src/app/services/auth.service.ts
 import { catchError } from 'rxjs/operators';
-import { throwError, Observable } from 'rxjs';
+import { throwError, Observable, of, map } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -50,6 +50,18 @@ export class AuthService {
           console.error('Logout error:', error);
           return throwError(error);
         }),
+      );
+  }
+
+  verifyAuth(): Observable<boolean> {
+    return this.http
+      .get(`${this.baseUrl}/verify-auth`, { withCredentials: true })
+      .pipe(
+        catchError((error) => {
+          console.error('Verify Auth error:', error);
+          return of(false);
+        }),
+        map((response: any) => response.message === 'Authenticated'),
       );
   }
 }
