@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { GoogleAuthService } from '../../services/google-auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,14 +11,25 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   error: string = '';
+  isLoggedIn = false;
+  isGoogleAuthenticated = false;
 
   constructor(
     private api: ApiService,
     private router: Router,
+    private authService: AuthService,
+    private googleAuthService: GoogleAuthService,
   ) {}
 
-  ngOnInit(): void {}
-  
+  ngOnInit(): void {
+    this.authService.isLoggedIn().subscribe((status) => {
+      this.isLoggedIn = status;
+    });
+    this.googleAuthService.isGoogleAuthenticated().subscribe((status) => {
+      this.isGoogleAuthenticated = status;
+    });
+  }
+
   goToDashboard() {
     this.router.navigate(['/dashboard']);
   }
