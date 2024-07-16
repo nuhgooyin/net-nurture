@@ -14,14 +14,9 @@ export class DashboardComponent implements OnInit {
   constructor(private contactService: ContactService) {}
 
   ngOnInit(): void {
-    this.fetchContacts();
-  }
-
-  fetchContacts(): void {
-    this.contactService.getContacts().subscribe(
-      (contacts) => {
-        // Map backend response to frontend interface with default values
-        this.contacts = contacts.map((contact) => ({
+    this.contactService.contacts$.subscribe(
+      (contacts: Contact[]) => {
+        this.contacts = contacts.map((contact: Contact) => ({
           id: contact.id,
           name: contact.name || 'Unknown', // Default value
           email: contact.email, // Ensure this field exists in the backend response
@@ -30,7 +25,7 @@ export class DashboardComponent implements OnInit {
           previewContent: contact.previewContent || 'No preview available', // Default value
         }));
       },
-      (error) => {
+      (error: any) => {
         console.error('Error fetching contacts:', error);
       },
     );

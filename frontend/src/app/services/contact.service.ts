@@ -1,6 +1,7 @@
+// src/app/services/contact.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Contact } from '../classes/contact';
 
 @Injectable({
@@ -8,10 +9,19 @@ import { Contact } from '../classes/contact';
 })
 export class ContactService {
   private apiUrl = 'http://localhost:3000/api/contacts';
+  private contactsSubject = new BehaviorSubject<Contact[]>([]);
+  contacts$ = this.contactsSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
-  getContacts(): Observable<Contact[]> {
-    return this.http.get<Contact[]>(this.apiUrl);
+  getContacts(): void {
+    this.http.get<Contact[]>(this.apiUrl).subscribe(
+      (contacts) => {
+        this.contactsSubject.next(contacts);
+      },
+      (error) => {
+        console.error('Error fetching contacts:', error);
+      },
+    );
   }
 }
