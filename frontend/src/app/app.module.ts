@@ -11,6 +11,7 @@ import { IndexComponent } from './pages/index/index.component';
 import { HeaderComponent } from './components/header/header.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
+import { LogoutComponent } from './auth//logout/logout.component';
 import { MaterialModule } from './material.module';
 import { GoogleLoginComponent } from './auth/google-login/google-login.component';
 import { GoogleAuthService } from './services/google-auth.service';
@@ -30,6 +31,7 @@ import { ContactService } from './services/contact.service';
     HeaderComponent,
     LoginComponent,
     SignupComponent,
+    LogoutComponent,
     GoogleLoginComponent,
     DashboardComponent,
     GmailSendComponent,

@@ -32,7 +32,7 @@ export const verifyGoogleToken = async (req, res) => {
 };
 
 export const signOut = (req, res) => {
-  res.clearCookie("googleToken");
+  res.clearCookie("accessToken");
   res.status(200).json({ message: "Signed out successfully" });
 };
 
