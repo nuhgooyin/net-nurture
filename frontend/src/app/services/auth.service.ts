@@ -1,7 +1,8 @@
+// src/app/services/auth.service.ts
+import { catchError } from 'rxjs/operators';
+import { throwError, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -12,23 +13,43 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   signup(username: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/signup`, { username, password });
-  }
-
-  signin(username: string, password: string): Observable<any> {
     return this.http
-      .post(`${this.baseUrl}/signin`, { username, password })
+      .post(
+        `${this.baseUrl}/signup`,
+        { username, password },
+        { withCredentials: true },
+      )
       .pipe(
-        map((response: any) => {
-          // Save token in local storage or cookie
-          localStorage.setItem('token', response.token);
-          return response;
+        catchError((error) => {
+          console.error('Signup error:', error);
+          return throwError(error);
         }),
       );
   }
 
-  signout(): void {
-    // Clear token from local storage or cookie
-    localStorage.removeItem('token');
+  signin(username: string, password: string): Observable<any> {
+    return this.http
+      .post(
+        `${this.baseUrl}/signin`,
+        { username, password },
+        { withCredentials: true },
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('Signin error:', error);
+          return throwError(error);
+        }),
+      );
+  }
+
+  logout(): Observable<any> {
+    return this.http
+      .post(`${this.baseUrl}/signout`, {}, { withCredentials: true })
+      .pipe(
+        catchError((error) => {
+          console.error('Logout error:', error);
+          return throwError(error);
+        }),
+      );
   }
 }

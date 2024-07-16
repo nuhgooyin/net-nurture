@@ -1,0 +1,27 @@
+<!-- src/app/pages/dashboard/dashboard.component.html -->
+<div class="dashboard-controls-container">
+  <nav class="navbar dashboard-controls-inner">
+    <a class="navbar-brand">Name</a>
+    <a class="navbar-brand">Email</a>
+    <a class="navbar-brand">Tags</a>
+    <a class="navbar-brand">Last Contacted</a>
+    <a class="navbar-brand">Summary</a>
+    <form class="form-inline">
+      <input
+        class="form-control mr-sm-2"
+        type="search"
+        placeholder="Search"
+        aria-label="Search"
+      />
+      <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">
+        Search
+      </button>
+    </form>
+  </nav>
+</div>
+
+<div class="dashboard-controls-container" id="contact-container">
+  <div *ngFor="let contact of contacts">
+    <app-contact [contact]="contact"></app-contact>
+  </div>
+</div>

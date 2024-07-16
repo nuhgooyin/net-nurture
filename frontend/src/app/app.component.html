@@ -1,13 +1,2 @@
 <app-header></app-header>
 <router-outlet></router-outlet>
-
-<div *ngIf="isLoginVisible">
-  <app-login></app-login>
-</div>
-<div *ngIf="isSignupVisible">
-  <app-signup></app-signup>
-</div>
-
-<main
-  [ngClass]="{ 'blur-background': isLoginVisible || isSignupVisible }"
-></main>

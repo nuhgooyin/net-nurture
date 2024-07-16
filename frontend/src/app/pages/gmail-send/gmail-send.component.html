@@ -1,0 +1,51 @@
+<form class="complex-form" [formGroup]="gmailsendForm" (ngSubmit)="onSubmit()">
+  <div class="form-title">Compose email</div>
+  <input
+    type="text"
+    name="reciever"
+    class="form-element"
+    placeholder="Your contact's email address"
+    formControlName="reciever"
+    required
+  />
+  <input
+    type="text"
+    name="subject"
+    class="form-element"
+    placeholder="Subject"
+    formControlName="subject"
+    required
+  />
+  <input
+    type="text"
+    name="content"
+    class="form-element"
+    placeholder="Email content"
+    formControlName="content"
+    required
+  />
+  <input
+    type="datetime-local"
+    id="schedule"
+    name="schedule"
+    formControlName="schedule"
+    required
+  />
+  <div>
+    <button
+      id="sendemail"
+      name="action"
+      class="btn"
+      type="submit"
+      [disabled]="!gmailsendForm.valid"
+    >
+      Automate Email
+    </button>
+  </div>
+  <p>From: {{ "j8977748@gmail.com" }}</p>
+  <p>To: {{ gmailsendForm.value.reciever }}</p>
+  <p>Subject: {{ gmailsendForm.value.subject }}</p>
+  <p>Content: {{ gmailsendForm.value.content }}</p>
+  <p>Date-Time: {{ gmailsendForm.value.schedule }}</p>
+  <p>Form Status: {{ gmailsendForm.status }}</p>
+</form>

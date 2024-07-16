@@ -1,0 +1,30 @@
+.contact {
+  margin: 0.5em 0;
+  padding: 0.5em 0;
+  border-bottom: 1px solid rgb(0, 0, 0);
+}
+.contact-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1em;
+  padding: 2em;
+  border-radius: 20px;
+  text-align: center;
+  background-color: #ececec;
+}
+.contact-user {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact-email {
+  padding-top: 5px;
+}
+
+.contact-content {
+  font-size: 24px;
+}

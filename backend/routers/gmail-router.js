@@ -1,28 +1,23 @@
 import { Router } from "express";
 import { Message } from "../models/message.js";
+import { Contact } from "../models/contact.js";
+import {
+  authenticateGoogleToken,
+  authorizeGoogleToken,
+} from "../middleware/authenticate.js";
 
 export const gmailRouter = Router();
 
-//
-// Fetch Gmail messages from currently authenticated user and store them in the database
-// Precondition: Access token is provided in the request authorization header (i.e., req.headers.authorization)
-//
-gmailRouter.get("/fetch", async (req, res) => {
+gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
   let collectedMessages = [];
+  let collectedContacts = [];
 
-  // Check if access token is provided
-  if (req.headers.authorization === undefined) {
-    return res.status(422).json({
-      error: "Invalid authorization. Expected access token.",
-    });
-  }
-
-  // Fetch raw Gmail messages
+  // Fetch raw Gmail messages (inbox only)
   let gmailRes = await fetch(
-    `https://gmail.googleapis.com/gmail/v1/users/me/messages`,
+    `https://gmail.googleapis.com/gmail/v1/users/me/messages?q=in:inbox`,
     {
       method: "GET",
-      headers: { authorization: req.headers.authorization },
+      headers: { authorization: `Bearer ${req.accessToken}` },
     }
   ).then((res) => res.json());
 
@@ -43,7 +38,7 @@ gmailRouter.get("/fetch", async (req, res) => {
       `https://gmail.googleapis.com/gmail/v1/users/me/messages/${message.id}`,
       {
         method: "GET",
-        headers: { authorization: req.headers.authorization },
+        headers: { authorization: `Bearer ${req.accessToken}` },
       }
     ).then((res) => res.json());
 
@@ -68,14 +63,22 @@ gmailRouter.get("/fetch", async (req, res) => {
       }
     }
 
-    // Find the content of the message, and display it as a string
-    let foundMessageContent = atob(
-      messageData.payload.parts[0].body.data
-        .replace(/-/g, "+")
-        .replace(/_/g, "/")
-    );
+    // Check if messageData.payload.parts exists and is an array
+    let foundMessageContent = "";
+    if (messageData.payload.parts && Array.isArray(messageData.payload.parts)) {
+      foundMessageContent = atob(
+        messageData.payload.parts[0].body.data
+          .replace(/-/g, "+")
+          .replace(/_/g, "/")
+      );
+    } else {
+      // Handle cases where the message body is in a different format
+      foundMessageContent = atob(
+        messageData.payload.body.data.replace(/-/g, "+").replace(/_/g, "/")
+      );
+    }
 
-    // Construct cleaned message & add to collected messages
+    // Construct cleaned message
     let cleanedMessage = {
       fullContent: foundMessageContent,
       previewContent: messageData.snippet,
@@ -85,9 +88,34 @@ gmailRouter.get("/fetch", async (req, res) => {
     };
     collectedMessages.push(cleanedMessage);
 
-    // Store the messages on the database
+    let cleanedContact = {
+      email: foundContactEmail,
+      name: foundContactName,
+    };
+    collectedContacts.push(cleanedContact);
+
+    // Store the contact and associate with message
     try {
-      await Message.create(cleanedMessage);
+      // Check if the contact already exists
+      let contact = await Contact.findOne({
+        where: { email: foundContactEmail },
+      });
+      if (!contact) {
+        // If contact doesn't exist, create a new one
+        contact = await Contact.create({
+          email: foundContactEmail,
+          name: foundContactName,
+        });
+      }
+
+      // Store the message and associate with the contact
+      const newMessage = await Message.create({
+        fullContent: foundMessageContent,
+        previewContent: messageData.snippet,
+        dateRecieved: messageDate,
+        contactEmail: foundContactEmail,
+        contactId: contact.id,
+      });
     } catch (e) {
       console.log(e);
       if (e.name === "SequelizeForeignKeyConstraintError") {
@@ -105,5 +133,38 @@ gmailRouter.get("/fetch", async (req, res) => {
   // Return the collected messages
   return res.json({
     messages: collectedMessages,
+    contacts: collectedContacts,
+  });
+});
+
+gmailRouter.post("/send", authorizeGoogleToken, async (req, res) => {
+  const { sender, reciever, subject, content } = req.body;
+  const message =
+    `From: ${sender}\r\n` +
+    `To: ${reciever}\r\n` +
+    `Subject: ${subject}\r\n\r\n` +
+    `${content}`;
+
+  // The body needs to be base64url encoded.
+  const encodedMessage = btoa(message);
+  const saferEncodedMessage = encodedMessage
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+
+  // Send raw Gmail message
+  let messageData = await fetch(
+    `https://gmail.googleapis.com/gmail/v1/users/me/messages/send`,
+    {
+      method: "POST",
+      headers: { authorization: `Bearer ${req.accessToken}` },
+      body: JSON.stringify({
+        raw: saferEncodedMessage,
+      }),
+    }
+  ).then((res) => res.json());
+
+  return res.json({
+    messageData: messageData,
   });
 });
