@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Message } from '../../classes/message';
+import { AppComponent } from '../../app.component';
+import { Contact } from '../../classes/contact';
 
 @Component({
-  selector: 'app-index',
-  templateUrl: './index.component.html',
-  styleUrl: './index.component.css',
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.css',
 })
-export class IndexComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   messages: Message[] = [];
   error: string = '';
 

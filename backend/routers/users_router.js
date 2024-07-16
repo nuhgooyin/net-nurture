@@ -5,6 +5,8 @@ import { User } from "../models/user.js";
 import { Router } from "express";
 import dotenv from "dotenv";
 
+dotenv.config();
+
 export const usersRouter = Router();
 
 // Sign-up route
@@ -34,7 +36,11 @@ usersRouter.post("/signin", async (req, res) => {
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    res.cookie("token", token, { httpOnly: true });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
+      sameSite: "Lax", // Helps mitigate CSRF attacks
+    });
     res.json({ message: "Signed in", token });
   } catch (error) {
     res.status(400).json({ error: error.message });

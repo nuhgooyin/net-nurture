@@ -56,12 +56,11 @@ export class GoogleAuthService {
       .subscribe(
         (res: any) => {
           this.ngZone.run(() => {
-            this.router.navigate(['/']);
+            this.router.navigate(['/dashboard']);
             this.snackBar.open('linked your gmail successful!', 'Close', {
               duration: 3000,
             });
             this.fetchGmailMessages();
-            //this.sendGmailMessage();
           });
         },
         (err: any) => {
@@ -103,26 +102,6 @@ export class GoogleAuthService {
         },
         (error) => {
           console.error('Error fetching Gmail messages:', error);
-        },
-      );
-  }
-  
-  public sendGmailMessage(reciever: string, subject: string, content: string) {
-    this.http
-      .post(
-        'http://localhost:3000/api/gmail/send',
-        {sender: "j8977748@gmail.com", 
-          reciever: reciever, 
-          subject: subject, 
-          content: content},
-        { withCredentials: true },
-      )
-      .subscribe(
-        (res: any) => {
-          console.log('Sent Gmail message:', res.messageData);
-        },
-        (error) => {
-          console.error('Error sending Gmail message:', error);
         },
       );
   }

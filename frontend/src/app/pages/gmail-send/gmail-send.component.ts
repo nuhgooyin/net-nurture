@@ -1,19 +1,23 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { GoogleAuthService } from '../../services/google-auth.service';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { GmailSendService } from '../../services/gmail-send.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-gmail-send',
   templateUrl: './gmail-send.component.html',
-  styleUrl: './gmail-send.component.css'
+  styleUrls: ['./gmail-send.component.css'],
 })
 export class GmailSendComponent implements OnInit {
-  @Output() newMessage = new EventEmitter<string>();
-  error: string = '';
   gmailsendForm: FormGroup;
 
-  constructor(private googleAuthService: GoogleAuthService, private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private gmailSendService: GmailSendService,
+    private snackBar: MatSnackBar,
+    private router: Router,
+  ) {
     this.gmailsendForm = this.fb.group({
       reciever: ['', Validators.required],
       subject: ['', Validators.required],
@@ -24,19 +28,44 @@ export class GmailSendComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  sendGmail(reciever: string, subject: string, content: string, schedule: any): void {
-    var scheduledDate = new Date(schedule);
-    console.log("Sending email at " + scheduledDate);
-    const timeLeft =  scheduledDate.getTime() - Date.now();
-    const timeoutId = setTimeout(() => {
-      this.googleAuthService.sendGmailMessage(reciever, subject, content);
-      console.log("Email has been sent"); }, timeLeft);
-  }
+  onSubmit(): void {
+    if (this.gmailsendForm.valid) {
+      const { reciever, subject, content, schedule } = this.gmailsendForm.value;
+      const scheduledDate = new Date(schedule);
+      const timeLeft = scheduledDate.getTime() - Date.now();
 
-  postMessage() {
-    this.newMessage.emit(this.gmailsendForm.value.reciever);
-    this.newMessage.emit(this.gmailsendForm.value.subject);
-    this.newMessage.emit(this.gmailsendForm.value.content);
-    this.newMessage.emit(this.gmailsendForm.value.schedule);
+      if (timeLeft > 0) {
+        setTimeout(() => {
+          this.gmailSendService
+            .sendGmailMessage(reciever, subject, content)
+            .subscribe(
+              (response) => {
+                this.snackBar.open('Email sent successfully!', 'Close', {
+                  duration: 10000,
+                });
+              },
+              (error) => {
+                this.snackBar.open(
+                  'Error sending email: ' + error.error.message,
+                  'Close',
+                  { duration: 10000 },
+                );
+              },
+            );
+        }, timeLeft);
+        this.snackBar.open('Email scheduled successfully!', 'Close', {
+          duration: 3000,
+        });
+        this.router.navigate(['/dashboard']);
+      } else {
+        this.snackBar.open('Scheduled time must be in the future.', 'Close', {
+          duration: 3000,
+        });
+      }
+    } else {
+      this.snackBar.open('Please fill in all fields', 'Close', {
+        duration: 3000,
+      });
+    }
   }
 }

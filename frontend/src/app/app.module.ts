@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -11,22 +11,25 @@ import { IndexComponent } from './pages/index/index.component';
 import { HeaderComponent } from './components/header/header.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MaterialModule } from './material.module';
-import { AuthToggleService } from './services/auth-toggle.service';
 import { GoogleLoginComponent } from './auth/google-login/google-login.component';
 import { GoogleAuthService } from './services/google-auth.service';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { GmailSendService } from './services/gmail-send.service';
 import { GmailSendComponent } from './pages/gmail-send/gmail-send.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ContactComponent,
     MessageComponent,
     IndexComponent,
     HeaderComponent,
     LoginComponent,
     SignupComponent,
     GoogleLoginComponent,
+    DashboardComponent,
     GmailSendComponent,
   ],
   imports: [
@@ -38,16 +41,7 @@ import { GmailSendComponent } from './pages/gmail-send/gmail-send.component';
     MaterialModule,
     BrowserAnimationsModule,
   ],
-  exports: [
-    BrowserModule,
-    HttpClientModule,
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MaterialModule,
-    BrowserAnimationsModule,
-  ],
-  providers: [provideAnimationsAsync(), AuthToggleService, GoogleAuthService],
+  providers: [GoogleAuthService, GmailSendService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
