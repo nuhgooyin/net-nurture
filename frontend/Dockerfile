@@ -7,7 +7,7 @@ COPY package.json ./
 RUN npm i --package-lock-only
 RUN npm ci
 COPY . ./
-RUN ng serve
+RUN npm run build
 
 # Serve these static files with NGINX.
 FROM nginx:1.21.6-alpine
