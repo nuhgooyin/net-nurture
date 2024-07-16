@@ -4,7 +4,7 @@ on:
   push:
     # Only run this workflow if it is a commit to main.
     branches:
-      - deployment
+      - main
     # Only run this workflow if the commit has modified files from frontend
     paths:
       - frontend/**
