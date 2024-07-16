@@ -7,22 +7,22 @@
     <ul id="menu">
       <a href="#"><li>Notifications</li></a>
       <li><div class="notification-box" id="notificationBox"></div></li>
-      <li>
+      <li *ngIf="!isLoggedIn">
         <button mat-raised-button color="primary" routerLink="/signup">
           <mat-icon>person_add</mat-icon>
           Signup
         </button>
       </li>
-      <li>
+      <li *ngIf="!isLoggedIn">
         <button mat-raised-button color="primary" routerLink="/login">
           <mat-icon>login</mat-icon>
           Login
         </button>
       </li>
-      <li><app-logout></app-logout></li>
-      <li><app-google-login></app-google-login></li>
-      <li><app-gmail-fetch></app-gmail-fetch></li>
-      <li>
+      <li *ngIf="isLoggedIn"><app-logout></app-logout></li>
+      <li *ngIf="isLoggedIn"><app-google-login></app-google-login></li>
+      <li *ngIf="isLoggedIn"><app-gmail-fetch></app-gmail-fetch></li>
+      <li *ngIf="isLoggedIn">
         <button mat-raised-button color="primary" routerLink="/gmail-send">
           <mat-icon>send</mat-icon>
           Send Gmail

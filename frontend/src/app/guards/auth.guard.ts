@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   canActivate(): Observable<boolean> {
-    return this.authService.verifyAuth().pipe(
+    return this.authService.isLoggedIn().pipe(
       tap((isAuthenticated) => {
         if (!isAuthenticated) {
           this.snackBar.open('Login first!', 'Close', { duration: 3000 });

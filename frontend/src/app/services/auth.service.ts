@@ -1,16 +1,18 @@
-// src/app/services/auth.service.ts
-import { catchError } from 'rxjs/operators';
-import { throwError, Observable, of, map } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { catchError, throwError, Observable, of, BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private baseUrl = 'http://localhost:3000/api/users';
+  private loggedIn = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.checkLoginStatus();
+  }
 
   signup(username: string, password: string): Observable<any> {
     return this.http
@@ -35,6 +37,10 @@ export class AuthService {
         { withCredentials: true },
       )
       .pipe(
+        map((response) => {
+          this.loggedIn.next(true);
+          return response;
+        }),
         catchError((error) => {
           console.error('Signin error:', error);
           return throwError(error);
@@ -46,6 +52,10 @@ export class AuthService {
     return this.http
       .post(`${this.baseUrl}/signout`, {}, { withCredentials: true })
       .pipe(
+        map((response) => {
+          this.loggedIn.next(false);
+          return response;
+        }),
         catchError((error) => {
           console.error('Logout error:', error);
           return throwError(error);
@@ -53,15 +63,20 @@ export class AuthService {
       );
   }
 
-  verifyAuth(): Observable<boolean> {
-    return this.http
+  isLoggedIn(): Observable<boolean> {
+    return this.loggedIn.asObservable();
+  }
+
+  private checkLoginStatus() {
+    this.http
       .get(`${this.baseUrl}/verify-auth`, { withCredentials: true })
-      .pipe(
-        catchError((error) => {
-          console.error('Verify Auth error:', error);
-          return of(false);
-        }),
-        map((response: any) => response.message === 'Authenticated'),
+      .subscribe(
+        (response: any) => {
+          this.loggedIn.next(response.message === 'Authenticated');
+        },
+        () => {
+          this.loggedIn.next(false);
+        },
       );
   }
 }
