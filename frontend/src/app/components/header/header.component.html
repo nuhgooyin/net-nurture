@@ -3,12 +3,16 @@
     <a routerLink="/" class="header-title">Net-Nurture</a>
   </span>
   <span class="spacer"></span>
-  <a routerLink="/gmail-send" id="gmail-send-button" class="btn hidden">Send Gmail</a>
-  <button mat-icon-button (click)="toggleLogin()">
+  <a routerLink="/gmail-send" id="gmail-send-button" class="btn hidden"
+    >Send Gmail</a
+  >
+  <button mat-raised-button color="primary" routerLink="/login">
     <mat-icon>login</mat-icon>
+    Login
   </button>
-  <button mat-icon-button (click)="toggleSignup()">
+  <button mat-raised-button color="primary" routerLink="/signup">
     <mat-icon>person_add</mat-icon>
+    Signup
   </button>
 </mat-toolbar>
 <p id="error-box" class="error-box">{{ error }}</p>

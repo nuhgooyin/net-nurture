@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
-import { AuthToggleService } from '../../services/auth-toggle.service';
 
 @Component({
   selector: 'app-header',
@@ -14,16 +13,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private api: ApiService,
     private router: Router,
-    private authToggleService: AuthToggleService,
   ) {}
 
   ngOnInit(): void {}
-
-  toggleLogin(): void {
-    this.authToggleService.toggleLogin();
-  }
-
-  toggleSignup(): void {
-    this.authToggleService.toggleSignup();
-  }
 }

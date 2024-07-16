@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthToggleService } from '../../services/auth-toggle.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,36 +10,40 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  username: string = '';
-  password: string = '';
-  isVisible: boolean = false;
+  loginForm: FormGroup;
 
   constructor(
+    private fb: FormBuilder,
     private authService: AuthService,
-    private authToggleService: AuthToggleService,
     private router: Router,
     private snackBar: MatSnackBar,
-  ) {}
-
-  ngOnInit(): void {
-    this.authToggleService.isLoginVisible$.subscribe(
-      (isVisible) => (this.isVisible = isVisible),
-    );
+  ) {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
   }
 
+  ngOnInit(): void {}
+
   onSubmit(): void {
-    this.authService.signin(this.username, this.password).subscribe(
-      (response) => {
-        // Handle successful login
-        this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
-        this.router.navigate(['/']);
-      },
-      (error) => {
-        // Handle error
-        this.snackBar.open('Login failed: ' + error.error.error, 'Close', {
-          duration: 3000,
-        });
-      },
-    );
+    if (this.loginForm.valid) {
+      const { username, password } = this.loginForm.value;
+      this.authService.signin(username, password).subscribe(
+        (response) => {
+          this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
+          this.router.navigate(['/']); // Redirect to the main page or a dashboard after successful login
+        },
+        (error) => {
+          this.snackBar.open('Login failed: ' + error.error.error, 'Close', {
+            duration: 3000,
+          });
+        },
+      );
+    } else {
+      this.snackBar.open('Please fill in all fields', 'Close', {
+        duration: 3000,
+      });
+    }
   }
 }
