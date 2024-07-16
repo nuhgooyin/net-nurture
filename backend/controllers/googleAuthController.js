@@ -38,7 +38,6 @@ export const signOut = (req, res) => {
 
 export const verifyGoogleCode = async (req, res) => {
   const { code } = req.body;
-  console.log(code);
   const csrfHeader = req.headers["x-requested-with"];
 
   if (csrfHeader !== "XmlHttpRequest") {
@@ -53,17 +52,13 @@ export const verifyGoogleCode = async (req, res) => {
       idToken: tokens.id_token,
       audience: process.env.GOOGLE_CLIENT_ID,
     });
-    console.log("got ticket");
     const payload = ticket.getPayload();
-    console.log("got payload");
 
     // Use the authenticated user from req.user
     const user = req.user;
-    console.log("Found user: ", user);
 
     if (user) {
       user.email = payload.email;
-      console.log("Updated email: ", user.email);
       await user.save();
       res.cookie("accessToken", tokens.access_token, {
         httpOnly: true,
