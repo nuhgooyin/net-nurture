@@ -1,5 +1,6 @@
 import { sequelize } from "../datasource.js";
 import { DataTypes } from "sequelize";
+import { Contact } from "./contact.js";
 
 export const Message = sequelize.define("Message", {
   fullContent: {
@@ -19,3 +20,6 @@ export const Message = sequelize.define("Message", {
     allowNull: false,
   },
 });
+
+Message.belongsTo(Contact, { foreignKey: "contactId" });
+Contact.hasMany(Message, { foreignKey: "contactId" });
