@@ -19,6 +19,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { GmailSendService } from './services/gmail-send.service';
 import { GmailSendComponent } from './pages/gmail-send/gmail-send.component';
 import { GmailFetchComponent } from './pages/gmail-fetch/gmail-fetch.component';
+import { ContactService } from './services/contact.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import { GmailFetchComponent } from './pages/gmail-fetch/gmail-fetch.component';
     MaterialModule,
     BrowserAnimationsModule,
   ],
-  providers: [GoogleAuthService, GmailSendService],
+  providers: [GoogleAuthService, GmailSendService, ContactService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

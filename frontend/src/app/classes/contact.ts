@@ -1,8 +1,8 @@
 export interface Contact {
   id: number;
   name: string;
-  contactEmail: string;
-  tags: string;
-  dateOfLastConvo: string;
-  previewContent: string;
+  email: string;
+  tags?: string; // Optional
+  dateOfLastConvo?: string; // Optional
+  previewContent?: string; // Optional
 }

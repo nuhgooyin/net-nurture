@@ -1,5 +1,6 @@
 import { sequelize } from "../datasource.js";
 import { DataTypes } from "sequelize";
+import { User } from "./user.js";
 
 export const Contact = sequelize.define("Contact", {
   email: {
@@ -12,3 +13,6 @@ export const Contact = sequelize.define("Contact", {
     allowNull: true,
   },
 });
+
+User.belongsTo(Contact, { foreignKey: "userID" });
+User.hasMany(Contact, { foreignKey: "userID" });

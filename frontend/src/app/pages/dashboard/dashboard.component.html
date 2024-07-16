@@ -1,3 +1,4 @@
+<!-- src/app/pages/dashboard/dashboard.component.html -->
 <div class="dashboard-controls-container">
   <nav class="navbar dashboard-controls-inner">
     <a class="navbar-brand">Name</a>
@@ -20,20 +21,7 @@
 </div>
 
 <div class="dashboard-controls-container" id="contact-container">
-  <div class="contact-box">
-    <p>John Smith</p>
-    <p>jsmithatgmail.com</p>
-    <p>N/A</p>
-    <p>2024-07-12</p>
-    <p class="summary-text">
-      summary heresummary heresummary heresummary heresummary here
-    </p>
+  <div *ngFor="let contact of contacts">
+    <app-contact [contact]="contact"></app-contact>
   </div>
 </div>
-
-<!-- <div class="contact-container" *ngFor="let contact of contacts">
-  <app-contact
-    class="row contact align-items-center"
-    [contact]="contact"
-  ></app-contact>
-</div> -->
