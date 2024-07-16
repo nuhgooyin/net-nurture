@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { AuthToggleService } from '../../services/auth-toggle.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -10,36 +10,36 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent implements OnInit {
-  username: string = '';
-  password: string = '';
-  isVisible: boolean = false;
+  signupForm: FormGroup;
 
   constructor(
+    private fb: FormBuilder,
     private authService: AuthService,
-    private authToggleService: AuthToggleService,
     private router: Router,
     private snackBar: MatSnackBar,
-  ) {}
-
-  ngOnInit(): void {
-    this.authToggleService.isSignupVisible$.subscribe(
-      (isVisible) => (this.isVisible = isVisible),
-    );
+  ) {
+    this.signupForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
   }
 
+  ngOnInit(): void {}
+
   onSubmit(): void {
-    this.authService.signup(this.username, this.password).subscribe(
-      (response) => {
-        // Handle successful signup
-        this.snackBar.open('Signup successful!', 'Close', { duration: 3000 });
-        this.router.navigate(['/']);
-      },
-      (error) => {
-        // Handle error
-        this.snackBar.open('Signup failed: ' + error.error.error, 'Close', {
-          duration: 3000,
-        });
-      },
-    );
+    if (this.signupForm.valid) {
+      const { username, password } = this.signupForm.value;
+      this.authService.signup(username, password).subscribe(
+        (response) => {
+          this.snackBar.open('Signup successful!', 'Close', { duration: 3000 });
+          this.router.navigate(['/']);
+        },
+        (error) => {
+          this.snackBar.open('Signup failed: ' + error.error.error, 'Close', {
+            duration: 3000,
+          });
+        },
+      );
+    }
   }
 }

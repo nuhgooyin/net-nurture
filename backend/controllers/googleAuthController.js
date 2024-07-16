@@ -49,14 +49,33 @@ export const verifyGoogleCode = async (req, res) => {
     const r = await client.getToken(code);
     const { tokens } = r;
 
-    res.cookie("accessToken", tokens.access_token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Lax",
+    const ticket = await client.verifyIdToken({
+      idToken: tokens.id_token,
+      audience: process.env.GOOGLE_CLIENT_ID,
     });
+    console.log("got ticket");
+    const payload = ticket.getPayload();
+    console.log("got payload");
 
-    res.status(200).json({ message: "Successfully authenticated" });
+    // Use the authenticated user from req.user
+    const user = req.user;
+    console.log("Found user: ", user);
+
+    if (user) {
+      user.email = payload.email;
+      console.log("Updated email: ", user.email);
+      await user.save();
+      res.cookie("accessToken", tokens.access_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Lax",
+      });
+      res.status(200).json({ message: "Successfully authenticated" });
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
   } catch (error) {
+    console.error("Error in verifyGoogleCode: ", error);
     res.status(401).json({ error: "Invalid code" });
   }
 };
