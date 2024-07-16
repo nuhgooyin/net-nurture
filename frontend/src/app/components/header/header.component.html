@@ -7,7 +7,25 @@
     <ul id="menu">
       <a href="#"><li>Notifications</li></a>
       <li><div class="notification-box" id="notificationBox"></div></li>
+      <li>
+        <button mat-raised-button color="primary" routerLink="/signup">
+          <mat-icon>person_add</mat-icon>
+          Signup
+        </button>
+      </li>
+      <li>
+        <button mat-raised-button color="primary" routerLink="/login">
+          <mat-icon>login</mat-icon>
+          Login
+        </button>
+      </li>
       <li><app-google-login></app-google-login></li>
+      <li>
+        <button mat-raised-button color="primary" routerLink="/gmail-send">
+          <mat-icon>mail</mat-icon>
+          Send Gmail
+        </button>
+      </li>
       <a href="https://net-nurture.com/credits" target="_blank"
         ><li>Credits</li></a
       >
@@ -18,19 +36,6 @@
     <a routerLink="/" class="header-title">Net-Nurture</a>
   </span>
   <span class="spacer"></span>
-
-  <button mat-raised-button color="primary" routerLink="/gmail-send">
-    <mat-icon>mail</mat-icon>
-    Send Gmail
-  </button>
-  <button mat-raised-button color="primary" routerLink="/login">
-    <mat-icon>login</mat-icon>
-    Login
-  </button>
-  <button mat-raised-button color="primary" routerLink="/signup">
-    <mat-icon>person_add</mat-icon>
-    Signup
-  </button>
 
   <ul
     class="nav nav-pills nav-fill gap-2 p-1 small rounded-5 shadow-sm bg-theme-green"
