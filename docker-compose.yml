@@ -37,7 +37,7 @@ services:
       - VIRTUAL_HOST=net-nurture.com
       - LETSENCRYPT_HOST=net-nurture.com
   backend:
-    image: ghcr.io/utsc-cscc09-programming-on-the-web/backend-net-nurture:config-workflows
+    image: ghcr.io/utsc-cscc09-programming-on-the-web/backend-net-nurture:latest
     container_name: backend
     restart: always
     expose:

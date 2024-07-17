@@ -19,7 +19,7 @@ jobs:
       - name: run compose up
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: nuhgooyin.me
+          host: net-nurture.com
           username: nuhgooyin
           key: ${{ secrets.P_KEY }}
           port: 22
