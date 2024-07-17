@@ -4,8 +4,8 @@ FROM node:22-alpine3.19 as build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./
-COPY package-lock.json ./
-RUN npm ci --silent
+RUN npm i --package-lock-only
+RUN npm ci
 COPY . ./
 RUN npm run build
 
