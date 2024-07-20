@@ -109,7 +109,7 @@ gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
       }
 
       // Store the message and associate with the contact
-      const newMessage = await Message.create({
+      Message.create({
         fullContent: foundMessageContent,
         previewContent: messageData.snippet,
         dateRecieved: messageDate,
