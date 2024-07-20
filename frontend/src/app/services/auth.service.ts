@@ -1,6 +1,7 @@
+// auth.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, throwError, Observable, of, BehaviorSubject } from 'rxjs';
+import { catchError, throwError, Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -9,6 +10,7 @@ import { map } from 'rxjs/operators';
 export class AuthService {
   private baseUrl = 'http://localhost:3000/api/users';
   private loggedIn = new BehaviorSubject<boolean>(false);
+  private emailStatus = new BehaviorSubject<string | null>(null);
 
   constructor(private http: HttpClient) {
     this.checkLoginStatus();
@@ -39,6 +41,7 @@ export class AuthService {
       .pipe(
         map((response) => {
           this.loggedIn.next(true);
+          this.fetchEmailStatus(); // Update email status on sign in
           return response;
         }),
         catchError((error) => {
@@ -54,6 +57,7 @@ export class AuthService {
       .pipe(
         map((response) => {
           this.loggedIn.next(false);
+          this.emailStatus.next(null); // Clear email status on logout
           return response;
         }),
         catchError((error) => {
@@ -67,12 +71,36 @@ export class AuthService {
     return this.loggedIn.asObservable();
   }
 
+  getEmailStatus(): Observable<string | null> {
+    return this.emailStatus.asObservable();
+  }
+
+  private fetchEmailStatus() {
+    this.http
+      .get<{ email: string }>(`${this.baseUrl}/email`, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((response) => response.email),
+        catchError((error) => {
+          console.error('Error fetching email status:', error);
+          return throwError(error);
+        }),
+      )
+      .subscribe((email) => {
+        this.emailStatus.next(email);
+      });
+  }
+
   private checkLoginStatus() {
     this.http
       .get(`${this.baseUrl}/verify-auth`, { withCredentials: true })
       .subscribe(
         (response: any) => {
           this.loggedIn.next(response.message === 'Authenticated');
+          if (response.message === 'Authenticated') {
+            this.fetchEmailStatus(); // Fetch email status if authenticated
+          }
         },
         () => {
           this.loggedIn.next(false);

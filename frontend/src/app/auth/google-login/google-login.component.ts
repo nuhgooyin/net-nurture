@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GoogleAuthService } from '../../services/google-auth.service';
+import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-google-login',
@@ -7,7 +9,30 @@ import { GoogleAuthService } from '../../services/google-auth.service';
   styleUrls: ['./google-login.component.scss'],
 })
 export class GoogleLoginComponent {
-  constructor(private googleAuthService: GoogleAuthService) {}
+  email: string | null = '';
+  private emailStatusSubscription: Subscription | null = null;
+
+  constructor(
+    private googleAuthService: GoogleAuthService,
+    private authService: AuthService,
+  ) {}
+
+  ngOnInit(): void {
+    this.emailStatusSubscription = this.authService.getEmailStatus().subscribe(
+      (email: string | null) => {
+        this.email = email;
+      },
+      (error: any) => {
+        console.error('Error fetching email status', error);
+      },
+    );
+  }
+
+  ngOnDestroy(): void {
+    if (this.emailStatusSubscription) {
+      this.emailStatusSubscription.unsubscribe();
+    }
+  }
 
   signInWithGoogle(): void {
     this.googleAuthService.signIn();
