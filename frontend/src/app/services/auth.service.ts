@@ -75,7 +75,7 @@ export class AuthService {
     return this.emailStatus.asObservable();
   }
 
-  private fetchEmailStatus() {
+  public fetchEmailStatus() {
     this.http
       .get<{ email: string }>(`${this.baseUrl}/email`, {
         withCredentials: true,
@@ -98,9 +98,9 @@ export class AuthService {
       .subscribe(
         (response: any) => {
           this.loggedIn.next(response.message === 'Authenticated');
-          if (response.message === 'Authenticated') {
-            this.fetchEmailStatus(); // Fetch email status if authenticated
-          }
+          // if (response.message === 'Authenticated') {
+          //   this.fetchEmailStatus(); // Fetch email status if authenticated
+          // }
         },
         () => {
           this.loggedIn.next(false);

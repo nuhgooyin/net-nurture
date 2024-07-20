@@ -12,9 +12,10 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderComponent implements OnInit {
   error: string = '';
+  email: string | null = '';
   isLoggedIn = false;
   isGoogleAuthenticated = false;
-  googleAuthenticationSubscription: Subscription | false = false;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private api: ApiService,
@@ -24,20 +25,28 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.isLoggedIn().subscribe((status) => {
-      this.isLoggedIn = status;
-    });
-    this.googleAuthenticationSubscription = this.googleAuthService
-      .isGoogleAuthenticated()
-      .subscribe((status) => {
-        this.isGoogleAuthenticated = status;
-      });
+    this.subscriptions.push(
+      this.authService.isLoggedIn().subscribe((status) => {
+        this.isLoggedIn = status;
+      }),
+      this.authService.getEmailStatus().subscribe(
+        (email: string | null) => {
+          this.email = email;
+          if (this.email === null) {
+            this.isGoogleAuthenticated = false;
+          } else {
+            this.isGoogleAuthenticated = true;
+          }
+        },
+        (error: any) => {
+          console.error('Error fetching email status', error);
+        },
+      ),
+    );
   }
 
   ngOnDestroy(): void {
-    if (this.googleAuthenticationSubscription) {
-      this.googleAuthenticationSubscription.unsubscribe();
-    }
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   goToDashboard() {
