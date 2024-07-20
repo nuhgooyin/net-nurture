@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, throwError, Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ContactService } from './contact.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,10 @@ export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   private emailStatus = new BehaviorSubject<string | null>(null);
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private contactService: ContactService,
+  ) {
     this.checkLoginStatus();
   }
 
@@ -58,6 +62,7 @@ export class AuthService {
         map((response) => {
           this.loggedIn.next(false);
           this.emailStatus.next(null); // Clear email status on logout
+          this.contactService.clearContacts(); // Clear contacts on logout
           return response;
         }),
         catchError((error) => {

@@ -19,25 +19,7 @@ export class GmailFetchComponent {
   ) {}
 
   public fetchGmailMessages(): void {
-    this.http
-      .get('http://localhost:3000/api/gmail/fetch', { withCredentials: true })
-      .subscribe(
-        (res: any) => {
-          console.log('Fetched Gmail messages:', res.messages);
-          console.log('Fetched Gmail contacts:', res.contacts);
-          this.snackBar.open('Emails fetched successfully', 'Close', {
-            duration: 5000,
-          });
-
-          // Fetch contacts after fetching Gmail messages
-          this.contactService.getContacts();
-          this.router.navigate(['/dashboard']);
-        },
-        (error: any) => {
-          this.snackBar.open('Error fetching emails: Unauthorized', 'Close', {
-            duration: 5000,
-          });
-        },
-      );
+    this.contactService.getContacts();
+    this.router.navigate(['/dashboard']);
   }
 }

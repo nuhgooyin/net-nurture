@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { GoogleAuthService } from '../../services/google-auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -21,7 +20,6 @@ export class HeaderComponent implements OnInit {
     private api: ApiService,
     private router: Router,
     private authService: AuthService,
-    private googleAuthService: GoogleAuthService,
   ) {}
 
   ngOnInit(): void {
