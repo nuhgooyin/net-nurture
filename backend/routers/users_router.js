@@ -58,3 +58,16 @@ usersRouter.post("/signout", (req, res) => {
 usersRouter.get("/verify-auth", authenticate, (req, res) => {
   res.json({ message: "Authenticated" });
 });
+
+usersRouter.get("/email", authenticate, async (req, res) => {
+  try {
+    const user = req.user;
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json({ email: user.email });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
