@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GmailSendService } from '../../services/gmail-send.service';
+import { GmailScheduleService } from '../../services/gmail-schedule.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
@@ -15,6 +16,7 @@ export class GmailSendComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private gmailSendService: GmailSendService,
+    private gmailScheduleService: GmailScheduleService,
     private snackBar: MatSnackBar,
     private router: Router,
   ) {
@@ -35,27 +37,22 @@ export class GmailSendComponent implements OnInit {
       const timeLeft = scheduledDate.getTime() - Date.now();
 
       if (timeLeft > 0) {
-        setTimeout(() => {
-          this.gmailSendService
-            .sendGmailMessage(reciever, subject, content)
+        this.gmailScheduleService
+            .scheduleGmailMessage(reciever, subject, content, scheduledDate.getTime())
             .subscribe(
               (response) => {
-                this.snackBar.open('Email sent successfully!', 'Close', {
+                this.snackBar.open('Email scheduled successfully!', 'Close', {
                   duration: 10000,
                 });
               },
               (error) => {
                 this.snackBar.open(
-                  'Error sending email: ' + error.error.message,
+                  'Error scheduling email: ' + error.error.message,
                   'Close',
                   { duration: 10000 },
                 );
               },
             );
-        }, timeLeft);
-        this.snackBar.open('Email scheduled successfully!', 'Close', {
-          duration: 3000,
-        });
         this.router.navigate(['/dashboard']);
       } else {
         this.snackBar.open('Scheduled time must be in the future.', 'Close', {

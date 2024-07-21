@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { Message } from "../models/message.js";
+import { Scheduled } from "../models/scheduled.js";
 import { Contact } from "../models/contact.js";
 import {
   authenticateGoogleToken,
@@ -166,5 +167,39 @@ gmailRouter.post("/send", authorizeGoogleToken, async (req, res) => {
 
   return res.json({
     messageData: messageData,
+  });
+});
+
+gmailRouter.post("/schedule", authorizeGoogleToken, async (req, res) => {
+  const { sender, reciever, subject, content, schedule } = req.body;
+  let schedMessage = null;
+  // Store the scheduled message
+  try {
+   // Store the message.
+    const scheduledMessage = await Scheduled.create({
+      from: sender,
+      to: reciever,
+      subject: subject,
+      content: content,
+      scheduledTimeStamp: schedule,
+      accessToken: req.accessToken,
+    });
+
+    schedMessage = scheduledMessage;
+  } catch (e) {
+    console.log(e);
+    if (e.name === "SequelizeForeignKeyConstraintError") {
+      return res.status(422).json({ error: "Invalid foreign key." });
+    } else if (e.name === "SequelizeValidationError") {
+      return res.status(422).json({
+        error: "Invalid input parameters.",
+      });
+    } else {
+      return res.status(400).json({ error: "Cannot store scheduled message." });
+    }
+  }
+
+  return res.json({
+    scheduledMessage: schedMessage,
   });
 });

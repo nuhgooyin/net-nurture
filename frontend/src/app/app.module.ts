@@ -18,6 +18,7 @@ import { GoogleAuthService } from './services/google-auth.service';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { GmailSendService } from './services/gmail-send.service';
+import { GmailScheduleService } from './services/gmail-schedule.service';
 import { GmailSendComponent } from './pages/gmail-send/gmail-send.component';
 import { GmailFetchComponent } from './pages/gmail-fetch/gmail-fetch.component';
 import { ContactService } from './services/contact.service';
@@ -47,7 +48,7 @@ import { AuthGuard } from './guards/auth.guard';
     MaterialModule,
     BrowserAnimationsModule,
   ],
-  providers: [GoogleAuthService, GmailSendService, ContactService, AuthGuard],
+  providers: [GoogleAuthService, GmailSendService, GmailScheduleService, ContactService, AuthGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
