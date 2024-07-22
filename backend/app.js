@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3000;
 export const app = express();
 
 const corsOptions = {
-  origin: "https://net-nurture.com",
+  origin: "*",
   credentials: true,
 };
 app.use(cors(corsOptions));

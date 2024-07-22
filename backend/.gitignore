@@ -8,5 +8,4 @@ uploads
 *.sqlite
 
 # dotenv environment variables file
-# .env
-# .env is included for deployment purposes. It should not be included in the repository.
+.env
