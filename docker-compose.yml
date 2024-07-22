@@ -45,3 +45,5 @@ services:
     environment:
       - VIRTUAL_HOST=api.net-nurture.com
       - LETSENCRYPT_HOST=api.net-nurture.com
+    env_file:
+      - .env
