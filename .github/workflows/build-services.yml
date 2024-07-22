@@ -1,6 +1,10 @@
 name: CD / Deploy
 
 on:
+  push:
+    # Only run this workflow if it is a commit to main.
+    branches:
+      - main
   # Only trigger, when the build workflow succeeded
   workflow_run:
     workflows: [CI frontend, CI backend]
