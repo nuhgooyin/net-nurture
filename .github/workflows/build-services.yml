@@ -1,9 +1,9 @@
-name: Redeploy
+name: CD / Deploy
 
 on:
   # Only trigger, when the build workflow succeeded
   workflow_run:
-    workflows: [frontend, backend]
+    workflows: ["CI frontend", "CI backend"]
     types:
       - completed
 
