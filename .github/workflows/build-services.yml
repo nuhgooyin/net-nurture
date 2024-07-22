@@ -3,15 +3,14 @@ name: CD / Deploy
 on:
   # Only trigger, when the build workflow succeeded
   workflow_run:
-    workflows: ["CI frontend", "CI backend"]
-    types:
-      - completed
+    workflows: [CI frontend, CI backend]
+    types: [completed]
 
 jobs:
   # Deploy on VM
-  deploy:
+  on-success:
     runs-on: ubuntu-latest
-
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: run compose up
         uses: appleboy/ssh-action@v1.0.3
