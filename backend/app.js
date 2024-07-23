@@ -11,7 +11,6 @@ import { googleAuthRouter } from "./routers/google_auth_router.js";
 import cors from "cors";
 
 import { usersRouter } from "./routers/users_router.js";
-import { scheduledRouter } from "./routers/scheduled_router.js";
 import { contactRouter } from "./routers/contact-router.js";
 import { Scheduled } from "./models/scheduled.js";
 import { Op } from "sequelize";
@@ -44,7 +43,6 @@ try {
 app.use("/api/gmail", gmailRouter);
 app.use("/api/messages", messagesRouter);
 app.use("/api/contacts", contactRouter);
-app.use("/api/schedule", contactRouter);
 
 // Use authentication routes
 app.use("/api/users", usersRouter);
