@@ -1,4 +1,5 @@
 import { OAuth2Client } from "google-auth-library";
+import { Token } from "../models/token.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -33,16 +34,20 @@ export const verifyGoogleCode = async (req, res) => {
       user.email = payload.email;
       await user.save();
 
-      const [token, created] = await Token.findOrCreate({
+      let token = await Token.findOne({
         where: { userId: user.id },
-        defaults: {
+      });
+
+      if (!token) {
+        // If token doesn't exist, create a new one
+        token = await Token.create({
+          userId: user.id,
           googleAccessToken: tokens.access_token,
           googleRefreshToken: tokens.refresh_token,
           tokenExpiry: new Date(Date.now() + tokens.expires_in * 1000),
-        },
-      });
-
-      if (!created) {
+        });
+      } else {
+        // Update existing token
         token.googleAccessToken = tokens.access_token;
         token.googleRefreshToken = tokens.refresh_token;
         token.tokenExpiry = new Date(Date.now() + tokens.expires_in * 1000);
