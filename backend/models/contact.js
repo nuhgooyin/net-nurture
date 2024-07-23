@@ -15,4 +15,4 @@ export const Contact = sequelize.define("Contact", {
 });
 
 User.belongsTo(Contact, { foreignKey: "userID" });
-User.hasMany(Contact, { foreignKey: "userID" });
+User.hasMany(Contact, { foreignKey: "userID", onDelete: "CASCADE" });

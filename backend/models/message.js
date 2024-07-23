@@ -22,4 +22,4 @@ export const Message = sequelize.define("Message", {
 });
 
 Message.belongsTo(Contact, { foreignKey: "contactId" });
-Contact.hasMany(Message, { foreignKey: "contactId" });
+Contact.hasMany(Message, { foreignKey: "contactId", onDelete: "CASCADE" });
