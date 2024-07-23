@@ -1,10 +1,7 @@
 import { Router } from "express";
 import { Message } from "../models/message.js";
 import { Contact } from "../models/contact.js";
-import {
-  authenticateGoogleToken,
-  authorizeGoogleToken,
-} from "../middleware/authenticate.js";
+import { authorizeGoogleToken } from "../middleware/authenticate.js";
 
 export const gmailRouter = Router();
 
