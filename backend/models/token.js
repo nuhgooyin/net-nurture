@@ -2,34 +2,27 @@ import { sequelize } from "../datasource.js";
 import { DataTypes } from "sequelize";
 import { User } from "./user.js";
 
-export const Scheduled = sequelize.define("Scheduled", {
-  from: {
+export const Token = sequelize.define("Token", {
+  googleAccessToken: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  to: {
+  googleRefreshToken: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  subject: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  content: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  scheduledTimeStamp: {
-    type: DataTypes.INTEGER,
+  tokenExpiry: {
+    type: DataTypes.DATE,
     allowNull: false,
   },
 });
 
-User.hasMany(Scheduled, {
+// Establish association with User model
+User.hasOne(Token, {
   foreignKey: "userId",
   onDelete: "CASCADE",
 });
 
-Scheduled.belongsTo(User, {
+Token.belongsTo(User, {
   foreignKey: "userId",
 });
