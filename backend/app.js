@@ -4,7 +4,6 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { sequelize } from "./datasource.js";
 import { gmailRouter } from "./routers/gmail-router.js";
-import { messagesRouter } from "./routers/messages_router.js";
 import { googleAuthRouter } from "./routers/google_auth_router.js";
 //import db from "./models/modelLoader.js";
 import cors from "cors";
@@ -37,7 +36,6 @@ try {
 }
 
 app.use("/api/gmail", gmailRouter);
-app.use("/api/messages", messagesRouter);
 app.use("/api/contacts", contactRouter);
 
 // Use authentication routes
