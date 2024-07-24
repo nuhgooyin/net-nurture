@@ -15,7 +15,7 @@ export const gmailRouter = Router();
 // Optional 2: Set query params "q" to filter threads fetched using Gmail search query (ex. is:sent will only return from sent box)
 //    Example: /api/gmail/fetch?q=is:sent
 //    Note: Default (i.e. q=undefined) will only filter out spam and trash. Add is:sent to fetch sent emails.
-gmailRouter.get("/fetch", async (req, res) => {
+gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
   try {
     // Set default maxResults to 100 if not provided
     if (!req.query.maxResults) {
@@ -28,7 +28,7 @@ gmailRouter.get("/fetch", async (req, res) => {
         `https://gmail.googleapis.com/gmail/v1/users/me/threads?maxResults=${req.query.maxResults}&q=${req.query.q}`,
         {
           method: "GET",
-          headers: { authorization: `${req.headers.authorization}` },
+          headers: { authorization: `Bearer ${req.accessToken}` },
         }
       ).then((res) => res.json())
     ).threads;
@@ -42,7 +42,7 @@ gmailRouter.get("/fetch", async (req, res) => {
         `https://gmail.googleapis.com/gmail/v1/users/me/threads/${thread.id}`,
         {
           method: "GET",
-          headers: { authorization: `${req.headers.authorization}` },
+          headers: { authorization: `Bearer ${req.accessToken}` },
         }
       ).then((res) => res.json());
 
@@ -50,7 +50,7 @@ gmailRouter.get("/fetch", async (req, res) => {
       let currUserEmail = (
         await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/profile`, {
           method: "GET",
-          headers: { authorization: `${req.headers.authorization}` },
+          headers: { authorization: `Bearer ${req.accessToken}` },
         }).then((res) => res.json())
       ).emailAddress;
 
