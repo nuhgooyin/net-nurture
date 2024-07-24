@@ -1,9 +1,8 @@
 import { Router } from "express";
+import { Scheduled } from "../models/scheduled.js";
 import { Contact } from "../models/contact.js";
-import {
-  authenticateGoogleToken,
-  authorizeGoogleToken,
-} from "../middleware/authenticate.js";
+import { authorizeGoogleToken } from "../middleware/authenticate.js";
+import { authenticate } from "../middleware/authenticate.js";
 
 export const gmailRouter = Router();
 
@@ -194,34 +193,36 @@ gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
   }
 });
 
-gmailRouter.post("/send", authorizeGoogleToken, async (req, res) => {
-  const { sender, reciever, subject, content } = req.body;
-  const message =
-    `From: ${sender}\r\n` +
-    `To: ${reciever}\r\n` +
-    `Subject: ${subject}\r\n\r\n` +
-    `${content}`;
+gmailRouter.post("/schedule", authenticate, async (req, res) => {
+  const { sender, reciever, subject, content, schedule } = req.body;
+  let schedMessage = null;
+  // Store the scheduled message
+  try {
+    // Store the message.
+    const scheduledMessage = await Scheduled.create({
+      from: sender,
+      to: reciever,
+      subject: subject,
+      content: content,
+      scheduledTimeStamp: schedule,
+      userId: req.user.id,
+    });
 
-  // The body needs to be base64url encoded.
-  const encodedMessage = btoa(message);
-  const saferEncodedMessage = encodedMessage
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
-
-  // Send raw Gmail message
-  let messageData = await fetch(
-    `https://gmail.googleapis.com/gmail/v1/users/me/messages/send`,
-    {
-      method: "POST",
-      headers: { authorization: `Bearer ${req.accessToken}` },
-      body: JSON.stringify({
-        raw: saferEncodedMessage,
-      }),
+    schedMessage = scheduledMessage;
+  } catch (e) {
+    console.log(e);
+    if (e.name === "SequelizeForeignKeyConstraintError") {
+      return res.status(422).json({ error: "Invalid foreign key." });
+    } else if (e.name === "SequelizeValidationError") {
+      return res.status(422).json({
+        error: "Invalid input parameters.",
+      });
+    } else {
+      return res.status(400).json({ error: "Cannot store scheduled message." });
     }
-  ).then((res) => res.json());
+  }
 
   return res.json({
-    messageData: messageData,
+    scheduledMessage: schedMessage,
   });
 });

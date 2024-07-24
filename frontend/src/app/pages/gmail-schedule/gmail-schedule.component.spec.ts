@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GmailSendComponent } from './gmail-send.component';
+import { GmailScheduleComponent } from './gmail-schedule.component';
 
-describe('GmailSendComponent', () => {
-  let component: GmailSendComponent;
-  let fixture: ComponentFixture<GmailSendComponent>;
+describe('GmailScheduleComponent', () => {
+  let component: GmailScheduleComponent;
+  let fixture: ComponentFixture<GmailScheduleComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GmailSendComponent]
+      declarations: [GmailScheduleComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GmailSendComponent);
+    fixture = TestBed.createComponent(GmailScheduleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
