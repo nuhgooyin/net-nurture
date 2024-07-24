@@ -12,7 +12,20 @@ export const Contact = sequelize.define("Contact", {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  lastContacted: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  summary: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  // JSON stringified data of messages collected from Gmail API
+  summaryRaw: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 });
 
-User.belongsTo(Contact, { foreignKey: "userID" });
-User.hasMany(Contact, { foreignKey: "userID" });
+Contact.belongsTo(User);
+User.hasMany(Contact);

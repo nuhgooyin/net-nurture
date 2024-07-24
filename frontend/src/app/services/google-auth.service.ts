@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 declare const google: any;
 
@@ -19,6 +20,7 @@ export class GoogleAuthService {
     private http: HttpClient,
     private ngZone: NgZone,
     private snackBar: MatSnackBar,
+    private authService: AuthService,
   ) {
     google.accounts.id.initialize({
       client_id: this.clientId,
@@ -58,12 +60,12 @@ export class GoogleAuthService {
       .subscribe(
         (res: any) => {
           this.ngZone.run(() => {
-            this.googleAuthenticated.next(true);
             this.router.navigate(['/dashboard']);
             this.snackBar.open('Linked your Gmail successfully!', 'Close', {
               duration: 3000,
             });
             this.fetchGmailMessages();
+            this.authService.fetchEmailStatus();
           });
         },
         (err: any) => {
@@ -84,16 +86,12 @@ export class GoogleAuthService {
       })
       .subscribe(
         (res: any) => {
-          console.log('Fetched Gmail messages:', res.messages);
-          console.log('Fetched Gmail contacts:', res.contacts);
+          console.log('Fetched Gmail threads:', res.threadsProcessed);
+          console.log('Fetched Gmail contacts:', res.createdContacts);
         },
         (error) => {
           console.error('Error fetching Gmail messages:', error);
         },
       );
-  }
-
-  isGoogleAuthenticated(): Observable<boolean> {
-    return this.googleAuthenticated.asObservable();
   }
 }

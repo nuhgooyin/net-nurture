@@ -24,4 +24,8 @@ export class ContactService {
       },
     );
   }
+
+  clearContacts(): void {
+    this.contactsSubject.next([]);
+  }
 }

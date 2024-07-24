@@ -19,16 +19,6 @@ export const authenticate = async (req, res, next) => {
   }
 };
 
-export const authenticateGoogleToken = (req, res, next) => {
-  const token = req.cookies.googleToken;
-  if (!token) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-  req.googleToken = token;
-  req.accessToken = req.cookies.accessToken;
-  next();
-};
-
 export const authorizeGoogleToken = (req, res, next) => {
   const accessToken = req.cookies.accessToken;
   if (!accessToken) {
@@ -36,4 +26,27 @@ export const authorizeGoogleToken = (req, res, next) => {
   }
   req.accessToken = accessToken;
   next();
+};
+
+export const authenticateBackgroundJob = async (req, res, next) => {
+  const { userId } = req.body; // Assuming userId is provided in the request body
+
+  if (!userId) {
+    return res.status(400).json({ error: "User ID is required" });
+  }
+
+  try {
+    const user = await User.findByPk(userId, {
+      include: [Token],
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    req.user = user;
+    next();
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
 };
