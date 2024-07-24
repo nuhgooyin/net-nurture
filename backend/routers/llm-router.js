@@ -9,7 +9,7 @@ export const llmRouter = Router();
 // Precondition: The database has been populated using the gmail-router fetch already. (no other inputs are necessary).
 // Returns: Contacts successfully updated in database.
 //
-llmRouter.post("/summarize", authenticate, async (req, res) => {
+llmRouter.post("/summarize", async (req, res) => {
   try {
     const genAI = new GoogleGenerativeAI(process.env.LLM_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -75,8 +75,52 @@ llmRouter.post("/summarize", authenticate, async (req, res) => {
 
 //
 // Revise summary of a specific contact
+// Precondition: The summary needs to be generated first before being revised.
 // Requirements: Must provide a contact ID (database primary key), and additional message to revise the summary.
 // Example request body: { contactID: 1, message: "I went to UCSD for economics and am planning on finishing a masters in data science there too." }
 // Returns: Revised summary of the contact.
 //
-llmRouter.patch("/revise", async (req, res) => {});
+llmRouter.patch("/revise", async (req, res) => {
+  try {
+    const genAI = new GoogleGenerativeAI(process.env.LLM_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    let contact = await Contact.findByPk(req.body.contactID);
+    let prompt =
+      `given that the summary is this: \n\n` +
+      contact.summary.toString() +
+      `\n and the additional message:
+
+"${req.body.message}" from ${contact.name}
+
+create a new summary. remove older bulletpoints if the summary is over 100 words long. the bulletpoints should be organized from newest to oldest. the style and formatting should remain the same.
+  
+Additional Notes:
+1. No need to prefix each bullet point with "${contact.name}"
+2. Do not assume ${contact.name}'s pronouns (I.e. it's safer to just say "they" instead).
+3. If there isn't enough information about ${contact.name}, then no need to add any more bullet points. Just summarize whatever information is available.
+4. Again, the formatting should remain the same (i.e. bullet points).
+`;
+
+    let generatedContent = await model.generateContent(prompt);
+
+    generatedContent =
+      generatedContent.response.candidates[0].content.parts[0].text;
+    contact.summary = generatedContent;
+    await contact.save();
+    return res.json({ revisedSummary: generatedContent });
+  } catch (e) {
+    console.log(e);
+    if (e.name === "SequelizeForeignKeyConstraintError") {
+      return res.status(422).json({ error: "Invalid foreign key." });
+    } else if (e.name === "SequelizeValidationError") {
+      return res.status(422).json({
+        error: "Invalid input parameters.",
+      });
+    } else {
+      return res
+        .status(400)
+        .json({ error: "Cannot update summary in database." });
+    }
+  }
+});
