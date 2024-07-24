@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import cron from "node-cron";
 import { sequelize } from "./datasource.js";
 import { gmailRouter } from "./routers/gmail-router.js";
+import { llmRouter } from "./routers/llm-router.js";
 import { googleAuthRouter } from "./routers/google_auth_router.js";
 //import db from "./models/modelLoader.js";
 import cors from "cors";
@@ -41,6 +42,7 @@ try {
 }
 
 app.use("/api/gmail", gmailRouter);
+app.use("/api/llm", llmRouter);
 app.use("/api/contacts", contactRouter);
 
 // Use authentication routes
