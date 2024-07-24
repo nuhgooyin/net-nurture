@@ -69,9 +69,7 @@ export const verifyGoogleCode = async (req, res) => {
   }
 };
 
-export const refreshGoogleAccessToken = async (user) => {
-  const token = user.Token;
-
+export const refreshGoogleAccessToken = async (token) => {
   if (new Date() > token.tokenExpiry) {
     const response = await client.refreshToken(token.googleRefreshToken);
     const newTokens = response.tokens;

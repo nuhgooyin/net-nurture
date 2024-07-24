@@ -111,7 +111,7 @@ gmailRouter.get(
           contact = await Contact.create({
             email: foundContactEmail,
             name: foundContactName,
-            userID: req.user.id,
+            userId: req.user.id,
           });
         }
 
@@ -145,19 +145,19 @@ gmailRouter.get(
   }
 );
 
-gmailRouter.post("/schedule", authorizeGoogleToken, async (req, res) => {
+gmailRouter.post("/schedule", authenticate, async (req, res) => {
   const { sender, reciever, subject, content, schedule } = req.body;
   let schedMessage = null;
   // Store the scheduled message
   try {
-   // Store the message.
+    // Store the message.
     const scheduledMessage = await Scheduled.create({
       from: sender,
       to: reciever,
       subject: subject,
       content: content,
       scheduledTimeStamp: schedule,
-      accessToken: req.accessToken,
+      userId: req.user.id,
     });
 
     schedMessage = scheduledMessage;
