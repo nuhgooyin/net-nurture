@@ -1,4 +1,4 @@
-<form class="complex-form" [formGroup]="gmailscheduleForm" (ngSubmit)="onSubmit()">
+<form class="automate-form" [formGroup]="gmailscheduleForm" (ngSubmit)="onSubmit()">
   <div class="form-title">Compose email</div>
   <input
     type="text"
@@ -28,6 +28,7 @@
     type="datetime-local"
     id="schedule"
     name="schedule"
+    class="form-element"
     formControlName="schedule"
     required
   />
