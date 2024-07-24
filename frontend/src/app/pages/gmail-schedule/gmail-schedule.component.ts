@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GmailScheduleService } from '../../services/gmail-schedule.service';
+import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
@@ -11,14 +12,30 @@ import { Router } from '@angular/router';
 })
 export class GmailScheduleComponent implements OnInit {
   gmailscheduleForm: FormGroup;
+  emailAddress = '';
+  
 
   constructor(
     private fb: FormBuilder,
     private gmailScheduleService: GmailScheduleService,
     private snackBar: MatSnackBar,
     private router: Router,
+    private authService: AuthService,
   ) {
+    this.authService.getEmailStatus().subscribe(
+      (email: string | null) => {
+        if (email === null) {
+        } else {
+          this.emailAddress = email;
+        }
+      },
+      (error: any) => {
+        console.error('Error fetching email status', error);
+      },
+    )
+
     this.gmailscheduleForm = this.fb.group({
+      sender: [this.emailAddress, Validators.required],
       reciever: ['', Validators.required],
       subject: ['', Validators.required],
       content: ['', Validators.required],
@@ -36,7 +53,7 @@ export class GmailScheduleComponent implements OnInit {
 
       if (timeLeft > 0) {
         this.gmailScheduleService
-            .scheduleGmailMessage(reciever, subject, content, scheduledDate.getTime())
+            .scheduleGmailMessage(this.emailAddress, reciever, subject, content, scheduledDate.getTime())
             .subscribe(
               (response) => {
                 this.snackBar.open('Email scheduled successfully!', 'Close', {

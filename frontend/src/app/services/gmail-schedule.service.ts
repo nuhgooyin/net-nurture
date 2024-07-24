@@ -10,11 +10,11 @@ export class GmailScheduleService {
 
   constructor(private http: HttpClient) {}
 
-  scheduleGmailMessage(reciever: string, subject: string, content: string, schedule: number) {
+  scheduleGmailMessage(sender: string, reciever: string, subject: string, content: string, schedule: number) {
     return this.http.post(
       `${this.baseUrl}/schedule`,
       {
-        sender: 'j8977748@gmail.com',
+        sender: sender,
         reciever: reciever,
         subject: subject,
         content: content,
