@@ -82,8 +82,8 @@ export class GoogleAuthService {
       .get('http://localhost:3000/api/gmail/fetch', { withCredentials: true })
       .subscribe(
         (res: any) => {
-          console.log('Fetched Gmail messages:', res.messages);
-          console.log('Fetched Gmail contacts:', res.contacts);
+          console.log('Fetched Gmail threads:', res.threadsProcessed);
+          console.log('Fetched Gmail contacts:', res.createdContacts);
         },
         (error) => {
           console.error('Error fetching Gmail messages:', error);

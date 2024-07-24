@@ -17,27 +17,30 @@ export const gmailRouter = Router();
 //    Note: Default (i.e. q=undefined) will only filter out spam and trash. Add is:sent to fetch sent emails.
 gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
   try {
+    let q = "";
     // Set default maxResults to 100 if not provided
-    if (!req.query.maxResults) {
+    if (!req.query.maxResults || req.query.maxResults === undefined) {
       req.query.maxResults = 100;
     }
-    console.log(req.accessToken);
+    // Set default q to none if not provided
+    if (req.query.q && req.query.q !== undefined) {
+      q = `&q=${req.query.q}`;
+    }
 
     // Fetch raw Gmail threads (inbox only, no spam)
     let threads = await fetch(
-      `https://gmail.googleapis.com/gmail/v1/users/me/threads?maxResults=${req.query.maxResults}&q=${req.query.q}`,
+      `https://gmail.googleapis.com/gmail/v1/users/me/threads?maxResults=${req.query.maxResults}${q}`,
       {
         method: "GET",
         headers: { authorization: `Bearer ${req.accessToken}` },
       }
     ).then((res) => res.json());
 
-    if (!threads) {
+    if (!threads || threads === undefined) {
       return res.status(400).json({ error: "Cannot fetch Gmail threads." });
     } else {
       threads = threads.threads;
     }
-
     let createdContacts = [];
     for (let i = 0; i < threads.length; i++) {
       let thread = threads[i];
@@ -160,7 +163,6 @@ gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
       }
 
       // Store them in db
-      console.log(identifiedContacts);
       identifiedContacts = Array.from(identifiedContacts);
       for (let k = 0; k < identifiedContacts.length; k++) {
         await Contact.create({
