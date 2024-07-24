@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GmailSendService } from './gmail-send.service';
+import { GmailScheduleService } from './gmail-schedule.service';
 
-describe('GmailSendService', () => {
-  let service: GmailSendService;
+describe('GmailScheduleService', () => {
+  let service: GmailScheduleService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GmailSendService);
+    service = TestBed.inject(GmailScheduleService);
   });
 
   it('should be created', () => {
