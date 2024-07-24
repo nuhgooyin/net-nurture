@@ -21,17 +21,22 @@ gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
     if (!req.query.maxResults) {
       req.query.maxResults = 100;
     }
+    console.log(req.accessToken);
 
     // Fetch raw Gmail threads (inbox only, no spam)
-    let threads = (
-      await fetch(
-        `https://gmail.googleapis.com/gmail/v1/users/me/threads?maxResults=${req.query.maxResults}&q=${req.query.q}`,
-        {
-          method: "GET",
-          headers: { authorization: `Bearer ${req.accessToken}` },
-        }
-      ).then((res) => res.json())
-    ).threads;
+    let threads = await fetch(
+      `https://gmail.googleapis.com/gmail/v1/users/me/threads?maxResults=${req.query.maxResults}&q=${req.query.q}`,
+      {
+        method: "GET",
+        headers: { authorization: `Bearer ${req.accessToken}` },
+      }
+    ).then((res) => res.json());
+
+    if (!threads) {
+      return res.status(400).json({ error: "Cannot fetch Gmail threads." });
+    } else {
+      threads = threads.threads;
+    }
 
     let createdContacts = [];
     for (let i = 0; i < threads.length; i++) {
