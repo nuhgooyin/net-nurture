@@ -20,7 +20,7 @@ export const Contact = sequelize.define("Contact", {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  // JSON stringified data of messages collected from Gmail API
+  // JSON stringified data of messages collected from Gmail API (Messages should be ordered from latest to earliest)
   summaryRaw: {
     type: DataTypes.STRING,
     allowNull: true,
