@@ -17,6 +17,10 @@ export const gmailRouter = Router();
 // Optional 3: Set query params "maxSame" to limit the number of threads processed for a particular contact.
 //    Example: /api/gmail/fetch?maxSame=3
 //    Note: Default (i.e. maxSame=undefined) will process a maximum of 5.
+//
+// Additional Notes:
+// 1. Newer threads are processed first.
+//
 gmailRouter.get("/fetch", async (req, res) => {
   try {
     let q = "";
