@@ -21,7 +21,7 @@ export const gmailRouter = Router();
 // Additional Notes:
 // 1. Newer threads are processed first.
 //
-gmailRouter.get("/fetch", async (req, res) => {
+gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
   try {
     let q = "";
     let maxSame = 5;
@@ -43,7 +43,7 @@ gmailRouter.get("/fetch", async (req, res) => {
       `https://gmail.googleapis.com/gmail/v1/users/me/threads?maxResults=${req.query.maxResults}${q}`,
       {
         method: "GET",
-        headers: { authorization: `${req.headers.authorization}` },
+        headers: { authorization: `Bearer ${req.accessToken}` },
       }
     ).then((res) => res.json());
 
@@ -61,7 +61,7 @@ gmailRouter.get("/fetch", async (req, res) => {
         `https://gmail.googleapis.com/gmail/v1/users/me/threads/${thread.id}`,
         {
           method: "GET",
-          headers: { authorization: `${req.headers.authorization}` },
+          headers: { authorization: `Bearer ${req.accessToken}` },
         }
       ).then((res) => res.json());
 
@@ -69,7 +69,7 @@ gmailRouter.get("/fetch", async (req, res) => {
       let currUserEmail = (
         await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/profile`, {
           method: "GET",
-          headers: { authorization: `${req.headers.authorization}` },
+          headers: { authorization: `Bearer ${req.accessToken}` },
         }).then((res) => res.json())
       ).emailAddress;
 
