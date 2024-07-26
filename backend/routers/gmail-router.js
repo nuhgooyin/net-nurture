@@ -14,9 +14,17 @@ export const gmailRouter = Router();
 // Optional 2: Set query params "q" to filter threads fetched using Gmail search query (ex. is:sent will only return from sent box)
 //    Example: /api/gmail/fetch?q=is:sent
 //    Note: Default (i.e. q=undefined) will only filter out spam and trash. Add is:sent to fetch sent emails.
-gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
+// Optional 3: Set query params "maxSame" to limit the number of threads processed for a particular contact.
+//    Example: /api/gmail/fetch?maxSame=3
+//    Note: Default (i.e. maxSame=undefined) will process a maximum of 5.
+//
+// Additional Notes:
+// 1. Newer threads are processed first.
+//
+gmailRouter.get("/fetch", async (req, res) => {
   try {
     let q = "";
+    let maxSame = 5;
     // Set default maxResults to 100 if not provided
     if (!req.query.maxResults || req.query.maxResults === undefined) {
       req.query.maxResults = 100;
@@ -25,13 +33,17 @@ gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
     if (req.query.q && req.query.q !== undefined) {
       q = `&q=${req.query.q}`;
     }
+    // Set default maxSame to 5 if not provided
+    if (req.query.maxSame && req.query.maxSame !== undefined) {
+      maxSame = req.query.maxSame;
+    }
 
     // Fetch raw Gmail threads (inbox only, no spam)
     let threads = await fetch(
       `https://gmail.googleapis.com/gmail/v1/users/me/threads?maxResults=${req.query.maxResults}${q}`,
       {
         method: "GET",
-        headers: { authorization: `Bearer ${req.accessToken}` },
+        headers: { authorization: `${req.headers.authorization}` },
       }
     ).then((res) => res.json());
 
@@ -40,7 +52,7 @@ gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
     } else {
       threads = threads.threads;
     }
-    let createdContacts = [];
+    let createdContacts = {};
     for (let i = 0; i < threads.length; i++) {
       let thread = threads[i];
 
@@ -49,7 +61,7 @@ gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
         `https://gmail.googleapis.com/gmail/v1/users/me/threads/${thread.id}`,
         {
           method: "GET",
-          headers: { authorization: `Bearer ${req.accessToken}` },
+          headers: { authorization: `${req.headers.authorization}` },
         }
       ).then((res) => res.json());
 
@@ -57,7 +69,7 @@ gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
       let currUserEmail = (
         await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/profile`, {
           method: "GET",
-          headers: { authorization: `Bearer ${req.accessToken}` },
+          headers: { authorization: `${req.headers.authorization}` },
         }).then((res) => res.json())
       ).emailAddress;
 
@@ -110,11 +122,8 @@ gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
         }
         foundContactName = foundContactName.trim();
 
-        // Check if contact already exists
-        let contact = await Contact.findOne({
-          where: { email: foundContactEmail },
-        });
-        if (!contact && foundContactEmail !== currUserEmail) {
+        // Check if contact has already been identified & is not the current user themselves
+        if (foundContactEmail !== currUserEmail) {
           let found = false;
           identifiedContacts.forEach((contact) => {
             if (contact.email === foundContactEmail) {
@@ -162,15 +171,38 @@ gmailRouter.get("/fetch", authorizeGoogleToken, async (req, res) => {
       }
 
       // Store them in db
-      identifiedContacts = Array.from(identifiedContacts);
       for (let k = 0; k < identifiedContacts.length; k++) {
-        await Contact.create({
-          email: identifiedContacts[k].email,
-          name: identifiedContacts[k].name,
-          lastContacted: latestMessageDate,
-          summaryRaw: JSON.stringify(cleanedMessages),
+        // Check if contact was already added to database
+        let contactFound = await Contact.findOne({
+          where: { email: identifiedContacts[k].email },
         });
-        createdContacts.push(identifiedContacts[k]);
+
+        if (!contactFound) {
+          // Create the contact in db
+          await Contact.create({
+            email: identifiedContacts[k].email,
+            name: identifiedContacts[k].name,
+            lastContacted: latestMessageDate,
+            summaryRaw: JSON.stringify(cleanedMessages),
+          });
+          createdContacts[identifiedContacts[k].email] = 1;
+        } else {
+          console.log("ALREADY ADDED CASE");
+          console.log(maxSame);
+          console.log(createdContacts[identifiedContacts[k].email]);
+          // Check if threshold maxSame is reached
+          if (createdContacts[identifiedContacts[k].email] < maxSame) {
+            console.log("MUTATION OCCURED");
+            createdContacts[identifiedContacts[k].email] += 1;
+            // Update/mutate the contact's raw summary
+            let parsedSummary = JSON.parse(contactFound.summaryRaw);
+            console.log("\n\n FIRST ITER", parsedSummary, threadData);
+            parsedSummary = parsedSummary.concat(cleanedMessages);
+            console.log("\n\n SECOND ITER", parsedSummary);
+            contactFound.summaryRaw = JSON.stringify(parsedSummary);
+            await contactFound.save();
+          }
+        }
       }
     }
 
