@@ -187,18 +187,12 @@ gmailRouter.get("/fetch", async (req, res) => {
           });
           createdContacts[identifiedContacts[k].email] = 1;
         } else {
-          console.log("ALREADY ADDED CASE");
-          console.log(maxSame);
-          console.log(createdContacts[identifiedContacts[k].email]);
           // Check if threshold maxSame is reached
           if (createdContacts[identifiedContacts[k].email] < maxSame) {
-            console.log("MUTATION OCCURED");
             createdContacts[identifiedContacts[k].email] += 1;
             // Update/mutate the contact's raw summary
             let parsedSummary = JSON.parse(contactFound.summaryRaw);
-            console.log("\n\n FIRST ITER", parsedSummary, threadData);
             parsedSummary = parsedSummary.concat(cleanedMessages);
-            console.log("\n\n SECOND ITER", parsedSummary);
             contactFound.summaryRaw = JSON.stringify(parsedSummary);
             await contactFound.save();
           }
