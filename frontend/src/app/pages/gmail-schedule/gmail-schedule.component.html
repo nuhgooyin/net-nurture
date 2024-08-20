@@ -1,5 +1,9 @@
 <div class="form-container">
-  <form class="automate-form" [formGroup]="gmailscheduleForm" (ngSubmit)="onSubmit()">
+  <form
+    class="automate-form"
+    [formGroup]="gmailscheduleForm"
+    (ngSubmit)="onSubmit()"
+  >
     <div class="form-title">Compose email</div>
     <input
       type="text"
@@ -50,4 +54,4 @@
     <p>Date-Time: {{ gmailscheduleForm.value.schedule }}</p>
     <p>Form Status: {{ gmailscheduleForm.status }}</p>
   </form>
-</div> 
+</div>

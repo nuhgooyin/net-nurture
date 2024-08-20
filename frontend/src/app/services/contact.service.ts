@@ -15,7 +15,7 @@ export class ContactService {
   private contactsSubject = new BehaviorSubject<Contact[]>([]);
   contacts$ = this.contactsSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getContacts(email: string): void {
     let params = new HttpParams().set('email', email);

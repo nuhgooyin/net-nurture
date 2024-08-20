@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
     private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
-  ) {}
+  ) { }
 
   canActivate(): Observable<boolean> {
     return this.authService.checkLoginStatus().pipe(

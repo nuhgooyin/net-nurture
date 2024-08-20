@@ -63,4 +63,4 @@ import { CreditsComponent } from './pages/credits/credits.component';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

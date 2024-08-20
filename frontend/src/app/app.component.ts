@@ -14,9 +14,9 @@ export class AppComponent {
     private renderer: Renderer2,
     private router: Router,
     private authService: AuthService,
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
   logoutOnRestart() {
     this.authService.logout().subscribe(
       (response) => {

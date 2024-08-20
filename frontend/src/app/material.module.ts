@@ -54,4 +54,4 @@ import { MatOptionModule } from '@angular/material/core';
     MatOptionModule,
   ],
 })
-export class MaterialModule {}
+export class MaterialModule { }

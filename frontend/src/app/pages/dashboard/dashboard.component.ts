@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit {
     private contactService: ContactService,
     public dialog: MatDialog,
     private authService: AuthService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Subscribe to the email status after confirming authentication

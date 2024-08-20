@@ -9,7 +9,7 @@ import { ApiService } from '../../services/api.service';
 export class IndexComponent implements OnInit {
   error: string = '';
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

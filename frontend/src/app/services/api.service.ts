@@ -10,5 +10,5 @@ export class ApiService {
   endpoint = 'https://api.net-nurture.com';
   //endpoint = environment.apiEndpoint;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 }

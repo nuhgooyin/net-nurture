@@ -22,7 +22,7 @@ export class GmailFetchComponent {
     private contactService: ContactService,
     public dialog: MatDialog,
     public googleAuthService: GoogleAuthService,
-  ) {}
+  ) { }
 
   public openFetchDialog(): void {
     const dialogRef = this.dialog.open(GmailFetchDialogComponent, {
