@@ -1,0 +1,28 @@
+.form-container {
+  display: block;
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 450px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  opacity: 1;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  button {
+    width: 100%;
+  }
+}

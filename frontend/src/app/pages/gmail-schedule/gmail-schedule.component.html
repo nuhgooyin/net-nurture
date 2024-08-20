@@ -1,0 +1,53 @@
+<div class="form-container">
+  <form class="automate-form" [formGroup]="gmailscheduleForm" (ngSubmit)="onSubmit()">
+    <div class="form-title">Compose email</div>
+    <input
+      type="text"
+      name="reciever"
+      class="form-element"
+      placeholder="Your contact's email address"
+      formControlName="reciever"
+      required
+    />
+    <input
+      type="text"
+      name="subject"
+      class="form-element"
+      placeholder="Subject"
+      formControlName="subject"
+      required
+    />
+    <textarea
+      rows="4"
+      type="text"
+      name="content"
+      class="form-element"
+      placeholder="Email content"
+      formControlName="content"
+      required
+    ></textarea>
+    <input
+      type="datetime-local"
+      id="schedule"
+      name="schedule"
+      class="form-element"
+      formControlName="schedule"
+      required
+    />
+    <div>
+      <button
+        id="sendemail"
+        name="action"
+        class="btn"
+        type="submit"
+        [disabled]="!gmailscheduleForm.valid"
+      >
+        Automate Email
+      </button>
+    </div>
+    <p>From: {{ gmailscheduleForm.value.sender }}</p>
+    <p>To: {{ gmailscheduleForm.value.reciever }}</p>
+    <p>Date-Time: {{ gmailscheduleForm.value.schedule }}</p>
+    <p>Form Status: {{ gmailscheduleForm.status }}</p>
+  </form>
+</div> 

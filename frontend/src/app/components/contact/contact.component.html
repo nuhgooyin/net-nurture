@@ -1,0 +1,15 @@
+<div class="contact-box" (click)="toggleSummary()">
+  <p>{{ contact.name }}</p>
+  <p>{{ contact.email }}</p>
+  <p>{{ contact.tags || "N/A" }}</p>
+  <p>{{ contact.lastContacted || "N/A" }}</p>
+  <p class="summary-text">
+    <span *ngIf="!showFullSummary">
+      {{ contact.summary | slice: 0 : 20 }}...
+      <!-- Show first 100 characters -->
+    </span>
+    <span *ngIf="showFullSummary">
+      {{ contact.summary }}
+    </span>
+  </p>
+</div>

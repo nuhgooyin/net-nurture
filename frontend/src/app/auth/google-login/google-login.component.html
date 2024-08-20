@@ -1,0 +1,10 @@
+<button *ngIf="email; else notLinked" mat-raised-button color="primary">
+  <mat-icon>email</mat-icon>
+  Linked with {{ email }}
+</button>
+<ng-template #notLinked>
+  <button mat-raised-button color="primary" (click)="signInWithGoogle()">
+    <mat-icon>email</mat-icon>
+    Link your Gmail
+  </button>
+</ng-template>

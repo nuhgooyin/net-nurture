@@ -1,0 +1,17 @@
+<mat-dialog-content>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ contact.name }}</mat-card-title>
+      <mat-card-subtitle>{{ contact.email }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p><strong>Tags:</strong> {{ contact.tags }}</p>
+      <p><strong>Last Contacted:</strong> {{ contact.lastContacted }}</p>
+      <h3>Summary</h3>
+      <p>{{ contact.summary }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="closeSummary()">Close</button>
+    </mat-card-actions>
+  </mat-card>
+</mat-dialog-content>

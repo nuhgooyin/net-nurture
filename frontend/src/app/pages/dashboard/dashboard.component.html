@@ -1,0 +1,81 @@
+<div class="dashboard-controls-container" id="contact-container">
+  <mat-toolbar>
+    <button
+      class="contact-btn"
+      mat-raised-button
+      color="primary"
+      (click)="openAddContactDialog()"
+    >
+      Add Contact
+    </button>
+    <mat-form-field>
+      <mat-label>Search by Name</mat-label>
+      <input
+        matInput
+        type="search"
+        placeholder=""
+        aria-label="Search"
+        (input)="applyFilter($event)"
+      />
+    </mat-form-field>
+  </mat-toolbar>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let contact">{{ contact.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let contact">{{ contact.email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="tags">
+      <th mat-header-cell *matHeaderCellDef>Tags</th>
+      <td mat-cell *matCellDef="let contact">{{ contact.tags }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastContacted">
+      <th mat-header-cell *matHeaderCellDef>Last Contacted</th>
+      <td mat-cell *matCellDef="let contact">{{ contact.lastContacted }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="summary">
+      <th mat-header-cell *matHeaderCellDef>Summary</th>
+      <td mat-cell *matCellDef="let contact">
+        <span
+          class="summary-text"
+          matTooltip="Click to view full summary"
+          (click)="showContactSummary(contact)"
+        >
+          {{ contact.summary | slice: 0 : summarySliceLength }}...
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let contact">
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="openEditContactDialog(contact)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteContact(contact)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[1, 5, 10, 25]"
+    [pageSize]="5"
+    showFirstLastButtons
+  ></mat-paginator>
+</div>

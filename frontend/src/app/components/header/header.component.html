@@ -1,0 +1,87 @@
+<mat-toolbar class="header-background" color="primary">
+  <div id="menu-toggle" class="hamburger">
+    <input type="checkbox" />
+    <span></span>
+    <span></span>
+    <span></span>
+    <ul id="menu">
+      <a href="#"><li>Notifications</li></a>
+      <li><div class="notification-box" id="notificationBox"></div></li>
+      <li *ngIf="!isLoggedIn">
+        <button mat-raised-button color="primary" routerLink="/signup">
+          <mat-icon>person_add</mat-icon>
+          Signup
+        </button>
+      </li>
+      <li *ngIf="!isLoggedIn">
+        <button mat-raised-button color="primary" routerLink="/login">
+          <mat-icon>login</mat-icon>
+          Login
+        </button>
+      </li>
+      <li *ngIf="isLoggedIn"><app-logout></app-logout></li>
+      <li *ngIf="isLoggedIn">
+        <app-google-login></app-google-login>
+      </li>
+      <li *ngIf="isLoggedIn && isGoogleAuthenticated">
+        <app-gmail-fetch></app-gmail-fetch>
+      </li>
+      <li *ngIf="isLoggedIn && isGoogleAuthenticated">
+        <button mat-raised-button color="primary" routerLink="/gmail-schedule">
+          <mat-icon>send</mat-icon>
+          Schedule a Email
+        </button>
+      </li>
+      <a href="https://net-nurture.com/credits" target="_blank"
+        ><li>Credits</li></a
+      >
+      <a href="https://net-nurture.com/privacy-policy" target="_blank"
+        ><li>Privacy Policy</li></a
+      >
+    </ul>
+  </div>
+  <img src="logo.png" alt="Net-Nurture logo" class="header-logo" />
+  <span>
+    <a routerLink="/" class="header-title">Net-Nurture</a>
+  </span>
+  <span class="spacer"> </span>
+
+  <ul
+    class="nav nav-pills nav-fill gap-2 p-1 small rounded-5 shadow-sm bg-theme-green"
+    id="pillNav2"
+    role="tablist"
+    style="
+      --bs-nav-link-color: var(--bs-white);
+      --bs-nav-pills-link-active-color: var(--text-theme-green);
+      --bs-nav-pills-link-active-bg: var(--bs-white);
+    "
+  >
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link active rounded-5"
+        id="home-tab2"
+        data-bs-toggle="tab"
+        type="button"
+        role="tab"
+        aria-selected="true"
+        (click)="goToHome()"
+      >
+        Home
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link rounded-5"
+        id="dashboard-tab2"
+        data-bs-toggle="tab"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        (click)="goToDashboard()"
+      >
+        Dashboard
+      </button>
+    </li>
+  </ul>
+</mat-toolbar>
+<p id="error-box" class="error-box">{{ error }}</p>

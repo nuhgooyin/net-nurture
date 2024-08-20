@@ -1,0 +1,53 @@
+.message-container {
+  margin: 0.5em 0;
+  padding: 0.5em 0;
+  border-bottom: 1px solid rgb(0, 0, 0);
+}
+
+.btn-custom-theme {
+  background-color: #fdd522;
+  color: #000000;
+  border-radius: 25px;
+  font-weight: bold;
+  border-width: 0px;
+  height: 65px;
+  width: 200px;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.btn-custom-theme:hover {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.btn-custom-theme:active {
+  transform: translateY(2px);
+}
+
+.background-donut {
+  position: absolute;
+}
+
+.foreground-parent {
+  position: relative;
+}
+
+.orange-donut {
+  padding-top: 50px;
+  margin-left: 80vmin;
+}
+
+.orange-donut-2 {
+  padding-top: 50px;
+  margin-left: 50vmin;
+}
+
+.green-donut {
+  padding-top: 50px;
+  margin-left: 80vmin;
+}
+
+.intro-text {
+  margin-top: 40px;
+}

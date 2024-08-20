@@ -1,0 +1,33 @@
+<h1 mat-dialog-title>Configure Email Fetch Options</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Number of Emails to Fetch</mat-label>
+    <mat-select [(value)]="emailCount">
+      <mat-option value="50">50</mat-option>
+      <mat-option value="100">100</mat-option>
+      <mat-option value="200">200</mat-option>
+      <mat-option value="500">500</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Email Folder</mat-label>
+    <mat-select [(value)]="emailFolder">
+      <mat-option value="">All</mat-option>
+      <mat-option value="in:inbox">Inbox</mat-option>
+      <mat-option value="in:sent">Sent</mat-option>
+      <mat-option value="in:drafts">Drafts</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Max Emails Per Contact</mat-label>
+    <mat-select [(value)]="maxPerContact">
+      <mat-option value="3">3</mat-option>
+      <mat-option value="5">5</mat-option>
+      <mat-option value="10">10</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button (click)="onFetch()">Fetch</button>
+</div>

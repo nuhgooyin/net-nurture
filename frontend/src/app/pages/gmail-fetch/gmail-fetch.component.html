@@ -1,0 +1,8 @@
+<button mat-raised-button color="primary" (click)="openFetchDialog()">
+  <mat-icon>archive</mat-icon>
+  Fetch your Emails
+</button>
+<mat-progress-bar
+  *ngIf="googleAuthService.show$ | async"
+  mode="indeterminate"
+></mat-progress-bar>
