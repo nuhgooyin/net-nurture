@@ -3,7 +3,13 @@
 ## Overview
 
 Net Nurture is a user-friendly personal CRM (Customer Relationship Management) solution designed to help individuals expand and maintain their network of contacts efficiently. This single-page web application integrates with users' email accounts to track and manage networking contacts automatically. 
-Hence, reducing the cognitive load of having to 1. remember to catch up with contacts 2. having to recall what your previous conversion with them was all about and 3. finding contacts and their corresponding information when your in a rush. See the key features below to see how these problems are solved!
+
+Hence, reducing the cognitive load of having to:
+1. Remember to catch up with contacts within a specified amount of time.
+2. Having to recall what your previous conversion with them was all about.
+3. Finding contacts and their corresponding information when you're in a rush.
+
+See the key features below to see how these problems are solved!
 
 ![Net Nurture Homepage](https://github.com/nuhgooyin/net-nurture/blob/main/images/index.png)
 *Figure 1: Net Nurture homepage showcasing the application's user-friendly interface*
