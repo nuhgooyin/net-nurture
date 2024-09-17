@@ -1,6 +1,6 @@
 # Net Nurture: Your Personal CRM Solution
 
-![Net Nurture Logo](https://i.imgur.com/logo_url.png)
+![Net Nurture Logo](https://github.com/nuhgooyin/net-nurture/blob/main/frontend/public/favicon.png)
 
 ## Overview
 
@@ -21,13 +21,16 @@ Net Nurture is a user-friendly personal CRM (Customer Relationship Management) s
 ## Screenshots
 
 ### Dashboard
-![Dashboard](https://i.imgur.com/kl6rEz0.png)
+![Dashboard](https://github.com/nuhgooyin/net-nurture/blob/main/images/dashboard_view.png)
 
 ### Email Fetch Configuration
-![Email Fetch Configuration](https://i.imgur.com/rFMPekR.png)
+![Email Fetch Configuration](https://github.com/nuhgooyin/net-nurture/blob/main/images/email_fetch_options.png)
 
 ### Email Scheduling
-![Email Scheduling](https://i.imgur.com/hV4Wfqf.png)
+![Email Scheduling](https://github.com/nuhgooyin/net-nurture/blob/main/images/email_scheduler.png)
+
+### Sidebar
+![Sidebar](https://github.com/nuhgooyin/net-nurture/blob/main/images/sidebar.png)
 
 ## Demo Video
 
