@@ -1,6 +1,5 @@
-# Net Nurture: Your Personal CRM Solution
+![Net Nurture Logo](https://github.com/nuhgooyin/net-nurture/blob/main/frontend/public/favicon.png) # Net Nurture: Your Personal CRM Solution
 
-![Net Nurture Logo](https://github.com/nuhgooyin/net-nurture/blob/main/frontend/public/favicon.png)
 
 ## Overview
 
