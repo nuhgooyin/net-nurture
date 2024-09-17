@@ -60,3 +60,37 @@ See the key features below to see how these problems are solved!
 2. They link their Gmail account to import contacts.
 3. The dashboard populates with contacts, showing names, last contact dates, communication methods, and conversation summaries.
 4. Notifications remind the user to catch up with contacts they haven't interacted with in over 3 months (by default).
+
+## Technologies Used
+
+Net Nurture leverages a modern tech stack (PEAN) to deliver a robust and efficient personal CRM solution:
+
+### Frontend
+- **Angular**: A framework for building web applications
+- **TypeScript**: Adds static typing to JavaScript for improved development experience
+- **HTML5 & CSS3**: For structuring and styling the user interface
+
+### Backend
+- **Node.js**: JavaScript runtime for server-side development
+- **Express.js**: Web application framework for Node.js, handling HTTP requests and routing
+
+### Database
+- **PostgreSQL**: Open-source relational database for storing user and contact information
+
+### Authentication
+- **OAuth**: For secure Gmail integration and user authentication
+
+### AI Integration
+- **Gemini AI**: Used for generating conversation summaries
+
+### DevOps & Deployment
+- **Docker**: Containerization of the application for consistent development and deployment
+- **GitHub Actions**: CI/CD pipeline for automated testing and deployment
+- **Google Cloud Platform (GCP)**: Cloud infrastructure for hosting the application
+
+### APIs
+- **Gmail API**: For fetching and managing email threads
+
+### Version Control
+- **Git**: Distributed version control system
+- **GitHub**: Hosting the project repository and managing collaborative development
