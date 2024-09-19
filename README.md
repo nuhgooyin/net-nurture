@@ -87,6 +87,7 @@ Net Nurture leverages a modern tech stack (PEAN) to deliver a robust and efficie
 - **Docker**: Containerization of the application for consistent development and deployment
 - **GitHub Actions**: CI/CD pipeline for automated testing and deployment
 - **Google Cloud Platform (GCP)**: Cloud infrastructure for hosting the application
+- **NGINX Reverse Proxy**: An intermediary layer between client requests and backend services.
 
 ### APIs
 - **Gmail API**: For fetching and managing email threads
