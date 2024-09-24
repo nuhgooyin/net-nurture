@@ -91,6 +91,7 @@ Net Nurture leverages a modern tech stack (PEAN) to deliver a robust and efficie
 
 ### APIs
 - **Gmail API**: For fetching and managing email threads
+- **Gmail Webhooks**: For updating dashboard on new emails sent and received.
 
 ### Version Control
 - **Git**: Distributed version control system
